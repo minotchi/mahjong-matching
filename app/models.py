@@ -137,7 +137,7 @@ class Item(models.Model):
         """
         リストボックスや管理画面での表示
         """
-        return self.sample_1
+        return self.sample_2
 
     class Meta:
         """
@@ -145,3 +145,44 @@ class Item(models.Model):
         """
         verbose_name = 'サンプル'
         verbose_name_plural = 'サンプル'
+
+class Room(models.Model):
+
+    title = models.CharField(
+        verbose_name='タイトル',
+        max_length=50,
+        blank=False,
+        null=False,
+    )
+
+    content = models.TextField(
+        verbose_name='内容',
+        blank=True,
+        null=True,
+    )
+
+    place = models.CharField(
+        verbose_name='場所',
+        max_length=50,
+        blank=True,
+        null=True,
+    )
+
+    start_at = models.DateTimeField(
+        verbose_name='開始日時',
+        blank=True,
+        null=True,
+    )
+
+    created_at = models.DateTimeField(
+        verbose_name='作成時間',
+        blank=True,
+        null=True,
+        editable=False,
+    )
+
+    def __str__(self):
+        """
+        リストボックスや管理画面での表示
+        """
+        return self.title

@@ -1,6 +1,6 @@
 from django import forms
 
-from .models import Item
+from .models import Item, Room
 
 
 class ItemForm(forms.ModelForm):
@@ -19,3 +19,9 @@ class ItemForm(forms.ModelForm):
         # auto_now=True
         # auto_now_add=Ture
         # editable=False
+
+class RoomForm(forms.ModelForm):
+
+    class Meta:
+        model = Room
+        fields = '__all__'
