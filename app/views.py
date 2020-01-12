@@ -183,15 +183,6 @@ class RoomFilterView(FilterView):
         ソート順・デフォルトの絞り込みを指定
         """
 
-        pprint('aaaaaaaaaaaaaaaaaaaaaaaa')
-
-        test_list = Room.objects.all().order_by('-created_at')
-        pprint(vars(test_list[1]))
-        pprint('bbbbbbbbbbbbbbbbbbbbbbbb')
-        pprint(vars(test_list))
-        pprint('cccccccccccccccccccccccc')
-
-
         # デフォルトの並び順として、登録時間（降順）をセットする。
         return Room.objects.all().order_by('-created_at')
 
