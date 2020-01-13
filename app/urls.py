@@ -1,4 +1,6 @@
 from django.urls import path
+from django.urls import path, include
+from django.contrib.auth import views as auth_views
 
 from .models import Item
 from .views import ItemFilterView, ItemDetailView, ItemCreateView, ItemUpdateView, ItemDeleteView
@@ -7,6 +9,9 @@ from .views import RoomFilterView, RoomDetailView, RoomCreateView, RoomUpdateVie
 # アプリケーションのルーティング設定
 
 urlpatterns = [
+    path('auth/', include('social_django.urls', namespace='social')),
+    path('logout/', auth_views.LogoutView.as_view(), name='logout'),
+
     path('detail/<int:pk>/', ItemDetailView.as_view(), name='detail'),
     path('create/', ItemCreateView.as_view(), name='create'),
     path('update/<int:pk>/', ItemUpdateView.as_view(), name='update'),
