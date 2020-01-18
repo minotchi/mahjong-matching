@@ -1,7 +1,7 @@
 import django_filters
 from django.db import models
 
-from .models import Item
+from .models import Item, Room
 
 
 class OrderingFilter(django_filters.filters.OrderingFilter):
@@ -30,7 +30,7 @@ class ItemFilterSet(django_filters.FilterSet):
     )
 
     class Meta:
-        model = Item
+        model = Room
         # 一部フィールドを除きモデルクラスの定義を全て引用する
         exclude = ['created_at', 'updated_by', 'updated_at', ]
         # 文字列検索のデフォルトを部分一致に変更

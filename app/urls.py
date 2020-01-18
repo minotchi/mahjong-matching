@@ -4,7 +4,7 @@ from django.contrib.auth import views as auth_views
 
 from .models import Item
 from .views import ItemFilterView, ItemDetailView, ItemCreateView, ItemUpdateView, ItemDeleteView
-from .views import RoomFilterView, RoomDetailView, RoomCreateView, RoomUpdateView, RoomDeleteView
+from .views import RoomFilterView, RoomDetailView, RoomCreateView, RoomUpdateView, RoomDeleteView, RoomJoinRequestView
 
 # アプリケーションのルーティング設定
 
@@ -19,6 +19,8 @@ urlpatterns = [
     # path('', ItemFilterView.as_view(), name='index'),
     path('', RoomFilterView.as_view(), name='index'),
     path('room/detail/<int:pk>/', RoomDetailView.as_view(), name='detail'),
+    path('room/join_request/<int:pk>/',
+         RoomJoinRequestView.as_view(), name='join_request'),
     path('room/update/<int:pk>/', RoomUpdateView.as_view(), name='update'),
     path('room/create/', RoomCreateView.as_view(), name='create'),
     path('room/delete/<int:pk>/', RoomDeleteView.as_view(), name='delete'),

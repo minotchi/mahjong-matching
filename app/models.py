@@ -174,6 +174,77 @@ class Room(models.Model):
         null=True,
     )
 
+    # 以下、管理項目
+
+    # 作成者(ユーザー)
+    created_by = models.ForeignKey(
+        User,
+        verbose_name='作成者',
+        blank=True,
+        null=True,
+        related_name='room_created_by',
+        on_delete=models.SET_NULL,
+        editable=False,
+    )
+
+    created_at = models.DateTimeField(
+        verbose_name='作成時間',
+        blank=True,
+        null=True,
+        editable=False,
+    )
+
+    # 更新者(ユーザー)
+    updated_by = models.ForeignKey(
+        User,
+        verbose_name='更新者',
+        blank=True,
+        null=True,
+        related_name='room_updated_by',
+        on_delete=models.SET_NULL,
+        editable=False,
+    )
+
+    # 更新時間
+    updated_at = models.DateTimeField(
+        verbose_name='更新時間',
+        blank=True,
+        null=True,
+        editable=False,
+    )
+
+    def __str__(self):
+        """
+        リストボックスや管理画面での表示
+        """
+        return self.title
+
+class RoomJoinRequest(models.Model):
+
+    comment = models.TextField(
+        verbose_name='コメント',
+        blank=True,
+        null=True,
+    )
+    # 作成者(ユーザー)
+    room = models.ForeignKey(
+        Room,
+        verbose_name='部屋ID',
+        blank=True,
+        null=True,
+        on_delete=models.SET_NULL,
+        editable=False,
+    )
+
+    user = models.ForeignKey(
+        User,
+        verbose_name='部屋ID',
+        blank=True,
+        null=True,
+        on_delete=models.SET_NULL,
+        editable=False,
+    )
+
     created_at = models.DateTimeField(
         verbose_name='作成時間',
         blank=True,
@@ -185,4 +256,4 @@ class Room(models.Model):
         """
         リストボックスや管理画面での表示
         """
-        return self.title
+        return self.comment

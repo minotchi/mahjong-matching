@@ -7,10 +7,10 @@ from django.views.generic.edit import CreateView, UpdateView, DeleteView
 from django_filters.views import FilterView
 
 from .filters import ItemFilterSet
-from .forms import ItemForm, RoomForm
-from .models import Item, Room
+from .forms import ItemForm, RoomForm, RoomJoinRequestForm
+from .models import Item, Room, RoomJoinRequest
 from pprint import pprint
-
+from django.db.models import Prefetch
 
 # 未ログインのユーザーにアクセスを許可する場合は、LoginRequiredMixinを継承から外してください。
 #
@@ -192,6 +192,17 @@ class RoomFilterView(FilterView):
         """
         # 表示データを追加したい場合は、ここでキーを追加しテンプレート上で表示する
         # 例：kwargs['sample'] = 'sample'
+
+        rooms = Room.objects.all().order_by('-created_at').prefetch_related(Prefetch("roomjoinrequest_set", queryset=RoomJoinRequest.objects.filter(user_id=self.request.user.id)))
+
+        requested = {}
+
+        for room in rooms:
+            # 部屋に参加リクエストを送信しているかどうかを判定
+            requested[room.id] = len(room.roomjoinrequest_set.all()) > 0
+
+        kwargs['requested'] = requested
+
         return super().get_context_data(object_list=object_list, **kwargs)
 
 class RoomDetailView(DetailView):
@@ -209,6 +220,7 @@ class RoomDetailView(DetailView):
         return super().get_context_data(**kwargs)
 
 class RoomCreateView(CreateView):
+    # TODO ログインしているか確認する処理
     """
     ビュー：登録画面
     """
@@ -231,6 +243,7 @@ class RoomCreateView(CreateView):
 
 
 class RoomUpdateView(UpdateView):
+    # TODO ログインしているか確認する処理
     """
     ビュー：更新画面
     """
@@ -251,6 +264,7 @@ class RoomUpdateView(UpdateView):
 
 
 class RoomDeleteView(DeleteView):
+    # TODO ログインしているか確認する処理
     """
     ビュー：削除画面
     """
@@ -263,5 +277,26 @@ class RoomDeleteView(DeleteView):
         """
         room = self.get_object()
         room.delete()
+
+        return HttpResponseRedirect(self.success_url)
+
+class RoomJoinRequestView(CreateView):
+    # TODO ログインしているか確認する処理
+    """
+    ビュー：登録画面
+    """
+    model = RoomJoinRequest
+    form_class = RoomJoinRequestForm
+    success_url = reverse_lazy('index')
+
+    def form_valid(self, form):
+        """
+        登録処理
+        """
+        roomjoinreqest = form.save(commit=False)
+        roomjoinreqest.user = self.request.user
+        roomjoinreqest.room = Room.objects.get(pk=self.kwargs.get('pk'))
+        roomjoinreqest.created_at = timezone.now()
+        roomjoinreqest.save()
 
         return HttpResponseRedirect(self.success_url)
