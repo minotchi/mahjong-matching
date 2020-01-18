@@ -1,6 +1,6 @@
 from django import forms
 
-from .models import Item, Room, RoomJoinRequest
+from .models import Item, Room, RoomJoinRequest, RoomUser
 
 
 class ItemForm(forms.ModelForm):
@@ -30,4 +30,10 @@ class RoomJoinRequestForm(forms.ModelForm):
 
     class Meta:
         model = RoomJoinRequest
+        fields = '__all__'
+
+class RoomUserForm(forms.ModelForm):
+
+    class Meta:
+        model = RoomUser
         fields = '__all__'

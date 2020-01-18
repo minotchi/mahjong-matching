@@ -1,14 +1,14 @@
 from django.contrib.auth.mixins import LoginRequiredMixin
 from django.http import HttpResponseRedirect
-from django.urls import reverse_lazy
+from django.urls import reverse_lazy, reverse
 from django.utils import timezone
 from django.views.generic import DetailView
 from django.views.generic.edit import CreateView, UpdateView, DeleteView
 from django_filters.views import FilterView
 
-from .filters import ItemFilterSet
-from .forms import ItemForm, RoomForm, RoomJoinRequestForm
-from .models import Item, Room, RoomJoinRequest
+from .filters import ItemFilterSet, RoomFilterSet, RoomJoinRequestFilterSet
+from .forms import ItemForm, RoomForm, RoomJoinRequestForm, RoomUserForm
+from .models import User, Item, Room, RoomJoinRequest, RoomUser
 from pprint import pprint
 from django.db.models import Prefetch
 
@@ -153,7 +153,7 @@ class RoomFilterView(FilterView):
     model = Room
 
     # django-filter 設定
-    filterset_class = ItemFilterSet
+    filterset_class = RoomFilterSet
     # django-filter ver2.0対応 クエリ未設定時に全件表示する設定
     strict = False
 
@@ -193,7 +193,8 @@ class RoomFilterView(FilterView):
         # 表示データを追加したい場合は、ここでキーを追加しテンプレート上で表示する
         # 例：kwargs['sample'] = 'sample'
 
-        rooms = Room.objects.all().order_by('-created_at').prefetch_related(Prefetch("roomjoinrequest_set", queryset=RoomJoinRequest.objects.filter(user_id=self.request.user.id)))
+        rooms = Room.objects.all().order_by('-created_at').prefetch_related(Prefetch("roomjoinrequest_set",
+                                                                                     queryset=RoomJoinRequest.objects.filter(user_id=self.request.user.id)))
 
         requested = {}
 
@@ -280,7 +281,8 @@ class RoomDeleteView(DeleteView):
 
         return HttpResponseRedirect(self.success_url)
 
-class RoomJoinRequestView(CreateView):
+
+class RoomJoinRequestCreateView(CreateView):
     # TODO ログインしているか確認する処理
     """
     ビュー：登録画面
@@ -300,3 +302,80 @@ class RoomJoinRequestView(CreateView):
         roomjoinreqest.save()
 
         return HttpResponseRedirect(self.success_url)
+
+
+class RoomJoinRequestFilterView(LoginRequiredMixin, FilterView):
+    model = RoomJoinRequest
+
+    # django-filter 設定
+    filterset_class = RoomJoinRequestFilterSet
+    # django-filter ver2.0対応 クエリ未設定時に全件表示する設定
+    strict = False
+
+    # 1ページの表示
+    paginate_by = 10
+
+    def get(self, request, **kwargs):
+        """
+        リクエスト受付
+        セッション変数の管理:一覧画面と詳細画面間の移動時に検索条件が維持されるようにする。
+        """
+
+        # 一覧画面内の遷移(GETクエリがある)ならクエリを保存する
+        if request.GET:
+            request.session['query'] = request.GET
+        # 詳細画面・登録画面からの遷移(GETクエリはない)ならクエリを復元する
+        else:
+            request.GET = request.GET.copy()
+            if 'query' in request.session.keys():
+                for key in request.session['query'].keys():
+                    request.GET[key] = request.session['query'][key]
+
+        return super().get(request, **kwargs)
+
+    def get_queryset(self):
+
+        return RoomJoinRequest.objects.all().filter(room_id=self.kwargs.get('pk'), is_approved = False).order_by('-created_at')
+
+    def get_context_data(self, *, object_list=None, **kwargs):
+
+        return super().get_context_data(object_list=object_list, **kwargs)
+
+
+class RoomUserCreateView(LoginRequiredMixin, CreateView):
+    """
+    ビュー：登録画面
+    """
+    model = RoomUser
+    form_class = RoomUserForm
+
+    def get_success_url(self):
+        return reverse('room_join_request', kwargs={"pk": self.kwargs.get('pk')})
+
+    def form_valid(self, form):
+        """
+        登録処理
+        """
+        pprint('RoomUserCreateView')
+        pprint(self.request)
+        pprint(self.request.POST['roomjoinrequest_id'])
+        # room_join_request = RoomJoinRequest.objects.all().filter(
+        room_join_request = RoomJoinRequest.objects.get(
+            pk=self.request.POST['roomjoinrequest_id'])
+
+        pprint(room_join_request)
+        pprint(room_join_request.user.id)
+        pprint(room_join_request.room.id)
+        pprint(self.kwargs.get('pk'))
+        pprint('RoomUserCreateView2')
+
+        roomuser = form.save(commit=False)
+        roomuser.user = User.objects.get(pk=room_join_request.user.id)
+        roomuser.room = Room.objects.get(pk=room_join_request.room.id)
+        roomuser.created_at = timezone.now()
+        roomuser.save()
+
+        room_join_request.is_approved = True
+        room_join_request.save()
+
+        return super(RoomUserCreateView, self).form_valid(form)

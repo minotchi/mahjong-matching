@@ -5,7 +5,11 @@
     <div class="container">
         <div class="row">
             <div class="col-12">
-                <h2 class="text-center">登録・更新</h2>
+                {% if object %}
+                <h2 class="text-center">ルームの編集</h2>
+                {% else %}
+                <h2 class="text-center">ルームの更新</h2>
+                {% endif %}
             </div>
         </div>
         <div class="row">
@@ -25,6 +29,11 @@
         </div>
         <div class="row">
             <div class="col-12">
+                {% if object %}
+                <div class="float-left mb-3">
+                    <a class="btn btn-outline-dark " href="{% url 'delete' room.pk %}">削除</a>
+                </div>
+                {% endif %}
                 <div class="float-right mb-3">
                     <a class="btn btn-outline-dark" href="{% url 'index' %}">戻る</a>
                     <a class="btn btn-outline-dark save" href="#">保存</a>

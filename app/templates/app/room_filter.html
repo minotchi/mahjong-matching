@@ -53,7 +53,7 @@
                             </div>
                             <div class="row">
                                 <div class="col-5 col-sm-3">
-                                    <p>内容</p>
+                                    <p>詳細</p>
                                 </div>
                                 <div class="col-7 col-sm-9">
                                     <p>{{ room.content|default_if_none:"未入力aa" }}</p>
@@ -79,9 +79,9 @@
                                 <div class="col-12">
                                     <div class="float-right">
                                         {% load lookup %}
-                                        {% if room.created_by.id == user.id %}
+                                        {% if user.is_authenticated and room.created_by.id == user.id %}
+                                        <a class="btn btn-outline-dark " href="{% url 'room_join_request' room.pk %}">参加申請者一覧</a>
                                         <a class="btn btn-outline-dark " href="{% url 'update' room.pk %}">編集</a>
-                                        <a class="btn btn-outline-dark " href="{% url 'delete' room.pk %}">削除</a>
                                         {% elif requested|lookup:room.id %}
                                         <a class="btn btn-outline-dark ">参加申請中</a>
                                         {% else %}

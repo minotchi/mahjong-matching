@@ -156,7 +156,7 @@ class Room(models.Model):
     )
 
     content = models.TextField(
-        verbose_name='内容',
+        verbose_name='詳細',
         blank=True,
         null=True,
     )
@@ -226,7 +226,7 @@ class RoomJoinRequest(models.Model):
         blank=True,
         null=True,
     )
-    # 作成者(ユーザー)
+
     room = models.ForeignKey(
         Room,
         verbose_name='部屋ID',
@@ -238,11 +238,53 @@ class RoomJoinRequest(models.Model):
 
     user = models.ForeignKey(
         User,
-        verbose_name='部屋ID',
+        verbose_name='ユーザID',
         blank=True,
         null=True,
         on_delete=models.SET_NULL,
         editable=False,
+    )
+    created_at = models.DateTimeField(
+        verbose_name='作成時間',
+        blank=True,
+        null=True,
+        editable=False,
+    )
+
+    is_approved = models.BooleanField(
+        verbose_name='承認済み',
+        default=False,
+    )
+
+    def __str__(self):
+        """
+        リストボックスや管理画面での表示
+        """
+        return self.comment
+
+class RoomUser(models.Model):
+
+    room = models.ForeignKey(
+        Room,
+        verbose_name='部屋ID',
+        blank=False,
+        null=False,
+        on_delete=models.CASCADE,
+        editable=False,
+    )
+
+    user = models.ForeignKey(
+        User,
+        verbose_name='ユーザID',
+        blank=False,
+        null=False,
+        on_delete=models.CASCADE,
+        editable=False,
+    )
+
+    is_owner = models.BooleanField(
+        verbose_name='オーナーである',
+        default=False,
     )
 
     created_at = models.DateTimeField(
