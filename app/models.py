@@ -254,6 +254,7 @@ class RoomJoinRequest(models.Model):
     is_approved = models.BooleanField(
         verbose_name='承認済み',
         default=False,
+        editable=False,
     )
 
     def __str__(self):
@@ -285,6 +286,7 @@ class RoomUser(models.Model):
     is_owner = models.BooleanField(
         verbose_name='オーナーである',
         default=False,
+        editable=False,
     )
 
     created_at = models.DateTimeField(

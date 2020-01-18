@@ -216,8 +216,10 @@ class RoomDetailView(DetailView):
         """
         表示データの設定
         """
-        # 表示データの追加はここで 例：
-        # kwargs['sample'] = 'sample'
+        room_join_requests = RoomJoinRequest.objects.all().filter(room_id=self.kwargs.get('pk'), user_id=self.request.user.id).order_by('-created_at')
+
+        kwargs['requested'] = len(room_join_requests) > 0
+
         return super().get_context_data(**kwargs)
 
 class RoomCreateView(CreateView):
@@ -282,7 +284,7 @@ class RoomDeleteView(DeleteView):
         return HttpResponseRedirect(self.success_url)
 
 
-class RoomJoinRequestCreateView(CreateView):
+class RoomJoinRequestCreateView(LoginRequiredMixin, CreateView):
     # TODO ログインしているか確認する処理
     """
     ビュー：登録画面
