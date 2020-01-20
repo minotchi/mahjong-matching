@@ -38,6 +38,10 @@
             {% csrf_token %}
             <input id="room_id" type="hidden" name="room_id" value="{{ room.id }}">
             <textarea name="content" cols="200" rows="5" class="textarea form-control mt-3" id="id_content"></textarea>
+
+            <div class="float-left mt-3 mb-3">
+                <a class="btn btn-secondary" href="{% url 'index' %}">戻る</a>
+            </div>
             <div class="float-right mt-3 mb-3">
                 <input class="btn btn-success" type="submit" value="送信">
             </div>
