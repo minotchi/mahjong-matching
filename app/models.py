@@ -223,7 +223,7 @@ class Room(models.Model):
         return len(RoomUser.objects.all().filter(room_id=room_id, user_id=user_id, is_owner=1)) > 0
 
     def get_users_except_owner(room_id):
-        return User.objects.raw('select * from users_user INNER JOIN app_roomuser on users_user.id=app_roomuser.user_id INNER JOIN app_room on app_roomuser.room_id=app_room.id where app_room.id=%s and app_roomuser.is_owner = 0', [room_id])
+        return User.objects.raw('select * from users_user INNER JOIN app_roomuser on users_user.id=app_roomuser.user_id INNER JOIN app_room on app_roomuser.room_id=app_room.id where app_room.id=%s and app_roomuser.is_owner is False', [room_id])
 class RoomJoinRequest(models.Model):
 
     comment = models.TextField(
