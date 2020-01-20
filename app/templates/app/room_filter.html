@@ -1,5 +1,6 @@
 {% extends "./_base.html" %}
 {% block content %}
+{% load lookup %}
     {% load crispy_forms_tags %}
     <div class="container">
         <h2 class="text-center">ルーム一覧</h2>
@@ -77,12 +78,27 @@
                                 </div>
                             </div>
                             <div class="row">
+                                <div class="col-5 col-sm-3">
+                                    <p>参加者</p>
+                                </div>
+                                <div class="col-7 col-sm-9">
+                                    <p>
+                                        {% for u in room_users|lookup:room.id %}
+
+                                            {{ u.username }}
+                                        {% endfor %}
+                                    </p>
+                                </div>
+                            </div>
+                            <div class="row">
                                 <div class="col-12">
                                     <div class="float-right">
-                                        {% load lookup %}
+                                        {% if is_room_user|lookup:room.id %}
+                                        <a class="btn btn-outline-dark ">トーク</a>
+                                        {% endif %}
                                         {% if user.is_authenticated and room.created_by.id == user.id %}
                                         <a class="btn btn-outline-dark " href="{% url 'room_join_request' room.pk %}">参加申請者一覧</a>
-                                        <a class="btn btn-outline-dark " href="{% url 'update' room.pk %}">編集</a>
+                                        {% elif is_room_user|lookup:room.id %}
                                         {% elif requested|lookup:room.id %}
                                         <a class="btn btn-outline-dark ">参加申請中</a>
                                         {% else %}

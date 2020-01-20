@@ -17,6 +17,7 @@ from django.db.models import Prefetch
 # LoginRequiredMixin：未ログインのユーザーをログイン画面に誘導するMixin
 # 参考：https://docs.djangoproject.com/ja/2.1/topics/auth/default/#the-loginrequired-mixin
 
+
 class ItemFilterView(LoginRequiredMixin, FilterView):
     """
     ビュー：一覧表示画面
@@ -142,6 +143,7 @@ class ItemDeleteView(LoginRequiredMixin, DeleteView):
 
         return HttpResponseRedirect(self.success_url)
 
+
 class RoomFilterView(FilterView):
     """
     ビュー：一覧表示画面
@@ -197,14 +199,24 @@ class RoomFilterView(FilterView):
                                                                                      queryset=RoomJoinRequest.objects.filter(user_id=self.request.user.id)))
 
         requested = {}
+        is_room_user = {}
+        room_users = {}
 
         for room in rooms:
-            # 部屋に参加リクエストを送信しているかどうかを判定
-            requested[room.id] = len(room.roomjoinrequest_set.all()) > 0
+            # ルームに参加リクエストを送信しているかどうかを判定
+            requested[room.id] = len(room.roomjoinrequest_set.all().filter(is_approved=0)) > 0
+            # ルームの参加者であるかどうかを判定
+            is_room_user[room.id] = len(RoomUser.objects.all().filter(room_id=room.id, user_id=self.request.user.id)) > 0
+            # ルームの参加者一覧を取得
+            room_users[room.id] = User.objects.raw(
+                'select * from users_user INNER JOIN app_roomuser on users_user.id=app_roomuser.user_id INNER JOIN app_room on app_roomuser.room_id=app_room.id where app_room.id=%s', [room.id])
 
         kwargs['requested'] = requested
+        kwargs['is_room_user'] = is_room_user
+        kwargs['room_users'] = room_users
 
         return super().get_context_data(object_list=object_list, **kwargs)
+
 
 class RoomDetailView(DetailView):
     """
@@ -216,11 +228,13 @@ class RoomDetailView(DetailView):
         """
         表示データの設定
         """
-        room_join_requests = RoomJoinRequest.objects.all().filter(room_id=self.kwargs.get('pk'), user_id=self.request.user.id).order_by('-created_at')
+        room_join_requests = RoomJoinRequest.objects.all().filter(
+            room_id=self.kwargs.get('pk'), user_id=self.request.user.id).order_by('-created_at')
 
         kwargs['requested'] = len(room_join_requests) > 0
 
         return super().get_context_data(**kwargs)
+
 
 class RoomCreateView(CreateView):
     # TODO ログインしているか確認する処理
@@ -241,6 +255,9 @@ class RoomCreateView(CreateView):
         room.updated_by = self.request.user
         room.updated_at = timezone.now()
         room.save()
+
+        RoomUser.objects.create(
+            room_id=room.id, user_id=self.request.user.id, created_at=timezone.now(), is_owner=1)
 
         return HttpResponseRedirect(self.success_url)
 
@@ -337,7 +354,7 @@ class RoomJoinRequestFilterView(LoginRequiredMixin, FilterView):
 
     def get_queryset(self):
 
-        return RoomJoinRequest.objects.all().filter(room_id=self.kwargs.get('pk'), is_approved = False).order_by('-created_at')
+        return RoomJoinRequest.objects.all().filter(room_id=self.kwargs.get('pk'), is_approved=False).order_by('-created_at')
 
     def get_context_data(self, *, object_list=None, **kwargs):
 
