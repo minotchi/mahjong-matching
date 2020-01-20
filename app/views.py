@@ -432,8 +432,10 @@ class CommentFilterView(LoginRequiredMixin, FilterView):
 
     def get_context_data(self, *, object_list=None, **kwargs):
         room = Room.objects.get(pk=self.kwargs.get('pk'))
+        room_users_except_owner = Room.get_users_except_owner(room.id)
 
         kwargs['room'] = room
+        kwargs['room_users_except_owner'] = room_users_except_owner
 
         return super().get_context_data(object_list=object_list, **kwargs)
 
