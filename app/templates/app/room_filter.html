@@ -3,12 +3,12 @@
 {% load lookup %}
     {% load crispy_forms_tags %}
     <div class="container">
-        <h2 class="text-center">ルーム一覧</h2>
+        <h3 class="text-center mt-3 mb-3">ルーム一覧</h3>
         <div id="myModal" class="modal fade" tabindex="-1" role="dialog">
             <div class="modal-dialog" role="document">
                 <div class="modal-content">
                     <div class="modal-header">
-                        <h5 class="modal-title">検索条件</h5>
+                        <h5 class="modal-title">ルーム 検索条件</h5>
                         <button type="button" class="close" data-dismiss="modal" aria-label="閉じる">
                             <span aria-hidden="true">&times;</span>
                         </button>
@@ -26,24 +26,19 @@
             </div>
         </div>
         <div class="row">
-            <div class="col-12">
-                <a class="btn btn-secondary filtered" style="visibility:hidden" href="/?page=1">検索を解除</a>
+            <div class="col-12 mb-3">
+                <a class="btn btn-secondary filtered mt-1" style="visibility:hidden" href="/?page=1">検索を解除</a>
                 <div class="float-right mt-1">
                     <a class="btn btn-success" href="{% url 'create' %}">ルーム作成</a>
                     <a class="btn btn-secondary" data-toggle="modal" data-target="#myModal" href="#">検索</a>
                 </div>
             </div>
         </div>
-        <div class="row mt-3">
-            <div class="col-10 mx-auto">
-                {% include "./_pagination.html" %}
-            </div>
-        </div>
         <div class="row">
             <div class="col-12">
                 <ul class="list-group">
                     {% for room in room_list %}
-                        <li class="list-group-item table-light">
+                        <li class="list-group-item table-light mb-1">
                             {# item_detail_contents.html を参考に必要な項目を追加してください #}
                             <div class="row">
                                 <div class="col-5 col-sm-3">
@@ -66,7 +61,7 @@
                                     <p>場所</p>
                                 </div>
                                 <div class="col-7 col-sm-9">
-                                    <p>{{ room.place|default_if_none:"未入力" }}</p>
+                                    <p>{{ room.place }}</p>
                                 </div>
                             </div>
                             <div class="row">
@@ -79,13 +74,20 @@
                             </div>
                             <div class="row">
                                 <div class="col-5 col-sm-3">
+                                    <p>オーナー</p>
+                                </div>
+                                <div class="col-7 col-sm-9">
+                                    <p>{{ room.created_by.last_name }}</p>
+                                </div>
+                            </div>
+                            <div class="row">
+                                <div class="col-5 col-sm-3">
                                     <p>参加者</p>
                                 </div>
                                 <div class="col-7 col-sm-9">
                                     <p>
-                                        {% for u in room_users|lookup:room.id %}
-
-                                            {{ u.username }}
+                                        {% for u in room_users_except_owner|lookup:room.id %}
+                                            {{ u.last_name }}
                                         {% endfor %}
                                     </p>
                                 </div>
@@ -94,17 +96,16 @@
                                 <div class="col-12">
                                     <div class="float-right">
                                         {% if is_room_user|lookup:room.id %}
-                                        <a class="btn btn-outline-dark ">トーク</a>
+                                        <a class="btn btn-success" href="{% url 'talk' room.pk %}">トーク</a>
                                         {% endif %}
                                         {% if user.is_authenticated and room.created_by.id == user.id %}
-                                        <a class="btn btn-outline-dark " href="{% url 'room_join_request' room.pk %}">参加申請者一覧</a>
+                                        <a class="btn btn btn-secondary" href="{% url 'room_join_request' room.pk %}">参加申請者一覧 <span class="badge badge-light"><!-- TODO ここにバッジ数入れる --></span></a>
                                         {% elif is_room_user|lookup:room.id %}
                                         {% elif requested|lookup:room.id %}
-                                        <a class="btn btn-outline-dark ">参加申請中</a>
+                                        <a class="btn btn-secondary">参加申請中</a>
                                         {% else %}
-                                        <a class="btn btn-outline-dark " href="{% url 'join_request' room.pk %}">参加申請する</a>
+                                        <a class="btn btn-success" href="{% url 'join_request' room.pk %}">参加申請する</a>
                                         {% endif %}
-                                        <a class="btn btn-outline-dark " href="{% url 'detail' room.pk %}">詳細</a>
                                     </div>
                                 </div>
                             </div>

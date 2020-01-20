@@ -5,10 +5,11 @@ from django.utils import timezone
 from django.views.generic import DetailView
 from django.views.generic.edit import CreateView, UpdateView, DeleteView
 from django_filters.views import FilterView
+from django.shortcuts import redirect
 
-from .filters import ItemFilterSet, RoomFilterSet, RoomJoinRequestFilterSet
-from .forms import ItemForm, RoomForm, RoomJoinRequestForm, RoomUserForm
-from .models import User, Item, Room, RoomJoinRequest, RoomUser
+from .filters import ItemFilterSet, RoomFilterSet, RoomJoinRequestFilterSet, CommentFilterSet
+from .forms import ItemForm, RoomForm, RoomJoinRequestForm, RoomUserForm, CommentForm
+from .models import User, Item, Room, RoomJoinRequest, RoomUser, Comment
 from pprint import pprint
 from django.db.models import Prefetch
 
@@ -200,20 +201,20 @@ class RoomFilterView(FilterView):
 
         requested = {}
         is_room_user = {}
-        room_users = {}
+        room_users_except_owner = {}
 
         for room in rooms:
             # ルームに参加リクエストを送信しているかどうかを判定
-            requested[room.id] = len(room.roomjoinrequest_set.all().filter(is_approved=0)) > 0
+            requested[room.id] = len(
+                room.roomjoinrequest_set.all().filter(is_approved=0)) > 0
             # ルームの参加者であるかどうかを判定
-            is_room_user[room.id] = len(RoomUser.objects.all().filter(room_id=room.id, user_id=self.request.user.id)) > 0
+            is_room_user[room.id] = RoomUser.exists(self, room.id, self.request.user.id)
             # ルームの参加者一覧を取得
-            room_users[room.id] = User.objects.raw(
-                'select * from users_user INNER JOIN app_roomuser on users_user.id=app_roomuser.user_id INNER JOIN app_room on app_roomuser.room_id=app_room.id where app_room.id=%s', [room.id])
+            room_users_except_owner[room.id] = Room.get_users_except_owner(room.id)
 
         kwargs['requested'] = requested
         kwargs['is_room_user'] = is_room_user
-        kwargs['room_users'] = room_users
+        kwargs['room_users_except_owner'] = room_users_except_owner
 
         return super().get_context_data(object_list=object_list, **kwargs)
 
@@ -339,6 +340,8 @@ class RoomJoinRequestFilterView(LoginRequiredMixin, FilterView):
         リクエスト受付
         セッション変数の管理:一覧画面と詳細画面間の移動時に検索条件が維持されるようにする。
         """
+        if not Room.is_owner(self, self.kwargs.get('pk'), self.request.user.id):
+            return redirect("index")
 
         # 一覧画面内の遷移(GETクエリがある)ならクエリを保存する
         if request.GET:
@@ -372,21 +375,13 @@ class RoomUserCreateView(LoginRequiredMixin, CreateView):
         return reverse('room_join_request', kwargs={"pk": self.kwargs.get('pk')})
 
     def form_valid(self, form):
+        if not Room.is_owner(self, self.kwargs.get('pk'), self.request.user.id):
+            return redirect("index")
         """
         登録処理
         """
-        pprint('RoomUserCreateView')
-        pprint(self.request)
-        pprint(self.request.POST['roomjoinrequest_id'])
-        # room_join_request = RoomJoinRequest.objects.all().filter(
         room_join_request = RoomJoinRequest.objects.get(
             pk=self.request.POST['roomjoinrequest_id'])
-
-        pprint(room_join_request)
-        pprint(room_join_request.user.id)
-        pprint(room_join_request.room.id)
-        pprint(self.kwargs.get('pk'))
-        pprint('RoomUserCreateView2')
 
         roomuser = form.save(commit=False)
         roomuser.user = User.objects.get(pk=room_join_request.user.id)
@@ -398,3 +393,69 @@ class RoomUserCreateView(LoginRequiredMixin, CreateView):
         room_join_request.save()
 
         return super(RoomUserCreateView, self).form_valid(form)
+
+
+class CommentFilterView(LoginRequiredMixin, FilterView):
+    model = RoomJoinRequest
+
+    # django-filter 設定
+    filterset_class = CommentFilterSet
+    # django-filter ver2.0対応 クエリ未設定時に全件表示する設定
+    strict = False
+
+    # 1ページの表示
+    paginate_by = 1000
+
+    def get(self, request, **kwargs):
+        """
+        リクエスト受付
+        セッション変数の管理:一覧画面と詳細画面間の移動時に検索条件が維持されるようにする。
+        """
+        if not RoomUser.exists(self, self.kwargs.get('pk'), self.request.user.id):
+            return redirect("index")
+
+        # 一覧画面内の遷移(GETクエリがある)ならクエリを保存する
+        if request.GET:
+            request.session['query'] = request.GET
+        # 詳細画面・登録画面からの遷移(GETクエリはない)ならクエリを復元する
+        else:
+            request.GET = request.GET.copy()
+            if 'query' in request.session.keys():
+                for key in request.session['query'].keys():
+                    request.GET[key] = request.session['query'][key]
+
+        return super().get(request, **kwargs)
+
+    def get_queryset(self):
+
+        return Comment.objects.all().filter(room_id=self.kwargs.get('pk')).order_by('created_at')
+
+    def get_context_data(self, *, object_list=None, **kwargs):
+        room = Room.objects.get(pk=self.kwargs.get('pk'))
+
+        kwargs['room'] = room
+
+        return super().get_context_data(object_list=object_list, **kwargs)
+
+
+class CommentCreateView(LoginRequiredMixin, CreateView):
+    """
+    ビュー：登録画面
+    """
+    model = Comment
+    form_class = CommentForm
+
+    def get_success_url(self):
+        return reverse('talk', kwargs={"pk": self.kwargs.get('pk')})
+
+    def form_valid(self, form):
+        if not RoomUser.exists(self, self.kwargs.get('pk'), self.request.user.id):
+            return redirect("index")
+        comment = form.save(commit=False)
+        comment.user = self.request.user
+        comment.room = Room.objects.get(pk=self.kwargs.get('pk'))
+        comment.content = self.request.POST['content']
+        comment.created_at = timezone.now()
+        comment.save()
+
+        return super(CommentCreateView, self).form_valid(form)

@@ -219,6 +219,11 @@ class Room(models.Model):
         """
         return self.title
 
+    def is_owner(self, room_id, user_id):
+        return len(RoomUser.objects.all().filter(room_id=room_id, user_id=user_id, is_owner=1)) > 0
+
+    def get_users_except_owner(room_id):
+        return User.objects.raw('select * from users_user INNER JOIN app_roomuser on users_user.id=app_roomuser.user_id INNER JOIN app_room on app_roomuser.room_id=app_room.id where app_room.id=%s and app_roomuser.is_owner = 0', [room_id])
 class RoomJoinRequest(models.Model):
 
     comment = models.TextField(
@@ -289,6 +294,40 @@ class RoomUser(models.Model):
         editable=False,
     )
 
+    created_at = models.DateTimeField(
+        verbose_name='作成時間',
+        blank=True,
+        null=True,
+        editable=False,
+    )
+    def exists(self, room_id, user_id):
+        return len(RoomUser.objects.all().filter(room_id=room_id, user_id=user_id)) > 0
+
+class Comment(models.Model):
+
+    content = models.TextField(
+        verbose_name='コメント',
+        blank=True,
+        null=True,
+    )
+
+    room = models.ForeignKey(
+        Room,
+        verbose_name='部屋ID',
+        blank=False,
+        null=False,
+        on_delete=models.CASCADE,
+        editable=False,
+    )
+
+    user = models.ForeignKey(
+        User,
+        verbose_name='ユーザID',
+        blank=False,
+        null=False,
+        on_delete=models.CASCADE,
+        editable=False,
+    )
     created_at = models.DateTimeField(
         verbose_name='作成時間',
         blank=True,
