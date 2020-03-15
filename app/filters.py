@@ -173,6 +173,7 @@ class CommentFilterSet(django_filters.FilterSet):
 
 class OshihikiFilterSet(django_filters.FilterSet):
     class Meta:
+        ordering = ['-id']
         model = Oshihiki
         # 一部フィールドを除きモデルクラスの定義を全て引用する
         exclude = []
