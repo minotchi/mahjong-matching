@@ -18,9 +18,22 @@
                 </div>
             </form>
             <div class="modal-footer">
-                <button type="submit" class="btn btn-success" form="filter">判定</button>
+                <button type="submit" class="btn btn-secondary btn-block" form="filter">判定</button>
             </div>
         </div>
 
+        {% if judge %}
+            <div class="text-center" style="margin:10px;">
+            {% if should_push %}
+                <div class="alert alert-success">
+                    <strong>押し！</strong>
+                </div>
+            {% else %}
+                <div class="alert alert-danger">
+                    <strong>降り！</strong>
+                </div>
+            {% endif %}
+            </div>
+        {% endif %}
     </div>
 {% endblock %}

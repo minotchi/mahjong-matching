@@ -353,3 +353,9 @@ class Oshihiki(models.Model):
         リストボックスや管理画面での表示
         """
         return self.point
+
+    def shoulud_push(point):
+        if point > 8000:
+            return True
+        else:
+            return False

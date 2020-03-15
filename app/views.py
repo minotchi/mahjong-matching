@@ -507,9 +507,13 @@ class OshihikiFilterView(FilterView):
         return Oshihiki.objects.all()
 
     def get_context_data(self, *, object_list=None, **kwargs):
-        """
-        表示データの設定
-        """
-        # 表示データを追加したい場合は、ここでキーを追加しテンプレート上で表示する
-        # 例：kwargs['sample'] = 'sample'
+        try:
+            point = int(self.request.GET.get("point"))
+            kwargs['should_push'] = Oshihiki.shoulud_push(point)
+            kwargs['judge'] = True
+        except ValueError:
+            kwargs['judge'] = False
+        except TypeError:
+            kwargs['judge'] = False
+
         return super().get_context_data(object_list=object_list, **kwargs)
