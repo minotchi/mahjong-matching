@@ -1,0 +1,26 @@
+{% extends "./_base.html" %}
+{% block content %}
+    {% load crispy_forms_tags %}
+    <div class="container">
+        <div class="row mb-3"></div>
+        <div class="container">
+            <div class="col-12">
+            </div>
+        </div>
+
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title">押し引き判定</h5>
+            </div>
+            <form id="filter" method="get">
+                <div class="modal-body">
+                    {{ filter.form|crispy }}
+                </div>
+            </form>
+            <div class="modal-footer">
+                <button type="submit" class="btn btn-success" form="filter">判定</button>
+            </div>
+        </div>
+
+    </div>
+{% endblock %}

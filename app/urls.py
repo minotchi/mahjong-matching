@@ -4,7 +4,7 @@ from django.contrib.auth import views as auth_views
 
 from .models import Item
 from .views import ItemFilterView, ItemDetailView, ItemCreateView, ItemUpdateView, ItemDeleteView
-from .views import RoomFilterView, RoomDetailView, RoomCreateView, RoomUpdateView, RoomDeleteView, RoomJoinRequestCreateView, RoomJoinRequestFilterView, RoomUserCreateView, CommentFilterView, CommentCreateView
+from .views import RoomFilterView, RoomDetailView, RoomCreateView, RoomUpdateView, RoomDeleteView, RoomJoinRequestCreateView, RoomJoinRequestFilterView, RoomUserCreateView, CommentFilterView, CommentCreateView, OshihikiFilterView
 
 # アプリケーションのルーティング設定
 
@@ -31,4 +31,5 @@ urlpatterns = [
     path('talk/<int:pk>/create/',
          CommentCreateView.as_view(), name='comment_create'),
 
+    path('oshihiki/', OshihikiFilterView.as_view(), name='oshihiki'),
 ]

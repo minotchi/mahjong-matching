@@ -340,3 +340,16 @@ class Comment(models.Model):
         リストボックスや管理画面での表示
         """
         return self.comment
+class Oshihiki(models.Model):
+
+    point = models.FloatField(
+        verbose_name='点数',
+        blank=True,
+        null=True,
+    )
+
+    def __str__(self):
+        """
+        リストボックスや管理画面での表示
+        """
+        return self.point

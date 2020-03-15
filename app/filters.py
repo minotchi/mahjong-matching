@@ -1,7 +1,7 @@
 import django_filters
 from django.db import models
 
-from .models import Item, Room, RoomJoinRequest, Comment
+from .models import Item, Room, RoomJoinRequest, Comment, Oshihiki
 
 
 class OrderingFilter(django_filters.filters.OrderingFilter):
@@ -169,3 +169,10 @@ class CommentFilterSet(django_filters.FilterSet):
                 },
             },
         }
+
+
+class OshihikiFilterSet(django_filters.FilterSet):
+    class Meta:
+        model = Oshihiki
+        # 一部フィールドを除きモデルクラスの定義を全て引用する
+        exclude = []
