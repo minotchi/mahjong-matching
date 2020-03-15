@@ -14,7 +14,63 @@
             </div>
             <form id="filter" method="get">
                 <div class="modal-body">
-                    {{ filter.form|crispy }}
+                    <div id="div_id_point" class="form-group"> <label for="id_point" class="col-form-label ">
+                            点数
+                        </label>
+                        <div class="">
+                            <select name="point" class="nullbooleanselect form-control" id="point">
+                                <option value="1000" {% if 1000 == point %} selected{% endif %}>30符 1翻（子 : 1000点　親 : 1500点）</option>
+                                <option value="2000" {% if 2000 == point %} selected{% endif %}>30符 2翻（子 : 2000点　親 : 2900点）</option>
+                                <option value="3900" {% if 3900 == point %} selected{% endif %}>30符 3翻（子 : 3900点　親 : 5800点）</option>
+                                <option value="7700" {% if 7700 == point %} selected{% endif %}>30符 4翻（子 : 7700点　親 : 11600点）</option>
+                            </select>
+                        </div>
+                    </div>
+                    <div id="div_id_hoju_rate" class="form-group"> <label for="id_hoju_rate" class="col-form-label ">
+                            放銃率
+                        </label>
+                        <div class="">
+                            <select name="hoju_rate" class="nullbooleanselect form-control" id="id_hoju_rate">
+                                <option value="5" {% if 5 == hoju_rate %} selected{% endif %}>5%</option>
+                                <option value="10" {% if 10 == hoju_rate %} selected{% endif %}>10%</option>
+                                <option value="15" {% if 15 == hoju_rate %} selected{% endif %}>15%</option>
+                                <option value="20" {% if 20 == hoju_rate %} selected{% endif %}>20%</option>
+                                <option value="25" {% if 25 == hoju_rate %} selected{% endif %}>25%</option>
+                            </select>
+                        </div>
+                    </div>
+                    <div id="div_id_junme" class="form-group"> <label for="id_junme" class="col-form-label ">
+                            順目
+                        </label>
+                        <div class="">
+                            <select name="junme" class="nullbooleanselect form-control" id="junme">
+                                <option value="8" {% if 8 == junme %} selected{% endif %}>8順目</option>
+                                <option value="11" {% if 11 == junme %} selected{% endif %}>11順目</option>
+                                <option value="14" {% if 14 == junme %} selected{% endif %}>14順目</option>
+                            </select>
+                        </div>
+                    </div>
+                    <div id="div_id_you_are_parent" class="form-group"> <label for="id_you_are_parent" class="col-form-label ">
+                            自分
+                        </label>
+                        <div class="">
+                             <select name="you_are_parent" class="nullbooleanselect form-control" id="id_you_are_parent">
+                                <option value="0" {% if 0 == you_are_parent %} selected{% endif %}>子</option>
+                                <option value="1" {% if 1 == you_are_parent %} selected{% endif %}>親</option>
+                            </select>
+                        </div>
+                    </div>
+                    <div id="div_id_oponent_is_parent" class="form-group"> <label for="id_oponent_is_parent" class="col-form-label ">
+                            相手
+                        </label>
+                        <div class="">
+                            <select name="oponent_is_parent" class="nullbooleanselect form-control" id="id_oponent_is_parent">
+                                <option value="0" {% if 0 == oponent_is_parent %} selected{% endif %}>子</option>
+                                <option value="1" {% if 1 == oponent_is_parent %} selected{% endif %}>親</option>
+                            </select>
+                        </div>
+                    </div>
+                    <!-- {{ filter.form|crispy }} -->
                 </div>
             </form>
             <div class="modal-footer">
@@ -26,11 +82,11 @@
             <div class="text-center" style="margin:10px;">
             {% if should_push %}
                 <div class="alert alert-success">
-                    <strong>押し！</strong>
+                    <strong>押し！</strong> 必要打点 : {{ required_point }}
                 </div>
             {% else %}
                 <div class="alert alert-danger">
-                    <strong>降り！</strong>
+                    <strong>降り！</strong> 必要打点 : {{ required_point }}
                 </div>
             {% endif %}
             </div>

@@ -1,3 +1,4 @@
+import math
 from django.db import models
 
 from users.models import User
@@ -342,10 +343,35 @@ class Comment(models.Model):
         return self.comment
 class Oshihiki(models.Model):
 
+    hoju_rate = models.FloatField(
+        verbose_name='放銃率',
+        blank=True,
+        null=True,
+    )
+
+    junme = models.IntegerField(
+        verbose_name='順目',
+        blank=True,
+        null=True,
+    )
+
     point = models.FloatField(
         verbose_name='点数',
         blank=True,
         null=True,
+    )
+
+    you_are_parent = models.BooleanField(
+        verbose_name='自分',
+        default=False,
+        editable=False,
+        null=False,
+    )
+
+    oponent_is_parent = models.BooleanField(
+        verbose_name='相手',
+        default=False,
+        editable=False,
     )
 
     def __str__(self):
@@ -354,8 +380,12 @@ class Oshihiki(models.Model):
         """
         return self.point
 
-    def shoulud_push(point):
-        if point > 8000:
-            return True
-        else:
-            return False
+    def get_required_point(point, hoju_rate, junme, you_are_parent, oponent_is_parent):
+        oshihiki = Oshihiki.objects.filter(hoju_rate=hoju_rate, junme=junme)
+
+        # TODO
+        # 親子判定ロジック
+        # 和了価値指標計算
+        # 良形愚形
+
+        return math.floor(oshihiki[0].point)

@@ -509,7 +509,23 @@ class OshihikiFilterView(FilterView):
     def get_context_data(self, *, object_list=None, **kwargs):
         try:
             point = int(self.request.GET.get("point"))
-            kwargs['should_push'] = Oshihiki.shoulud_push(point)
+            hoju_rate = int(self.request.GET.get("hoju_rate"))
+            junme = int(self.request.GET.get("junme"))
+            you_are_parent = int(self.request.GET.get("you_are_parent"))
+            oponent_is_parent = int(self.request.GET.get("oponent_is_parent"))
+
+            kwargs['point'] = point
+            kwargs['hoju_rate'] = hoju_rate
+            kwargs['junme'] = junme
+            kwargs['you_are_parent'] = you_are_parent
+            kwargs['oponent_is_parent'] = oponent_is_parent
+
+            required_point = Oshihiki.get_required_point(
+                point, hoju_rate, junme, you_are_parent, oponent_is_parent)
+
+            kwargs['required_point'] = required_point
+            kwargs['should_push'] = point >= required_point
+
             kwargs['judge'] = True
         except ValueError:
             kwargs['judge'] = False
