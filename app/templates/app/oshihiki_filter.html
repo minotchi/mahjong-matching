@@ -12,10 +12,33 @@
             <div class="modal-header">
                 <h5 class="modal-title">押し引き判定</h5>
             </div>
+
+            {% if cannot_judge %}
+            <div class="text-center" style="margin:10px;">
+                <div class="alert alert-danger">
+                    <strong>判定できません</strong>
+                </div>
+            </div>
+            {% endif %}
+
+            {% if judge %}
+            <div class="text-center" style="margin:10px;">
+                {% if should_push %}
+                <div class="alert alert-success">
+                    <strong>押し！</strong> 必要打点 : {{ required_point }}
+                </div>
+                {% else %}
+                <div class="alert alert-danger">
+                    <strong>降り！</strong> 必要打点 : {{ required_point }}
+                </div>
+                {% endif %}
+            </div>
+            {% endif %}
+
             <form id="filter" method="get">
                 <div class="modal-body">
                     <div id="div_id_point" class="form-group"> <label for="id_point" class="col-form-label ">
-                            点数
+                            打点
                         </label>
                         <div class="">
                             <select name="point" class="nullbooleanselect form-control" id="point">
@@ -26,19 +49,33 @@
                             </select>
                         </div>
                     </div>
+
+                    <div id="div_id_is_ryokei" class="form-group">
+                        <label for="is_ryokei" class="col-form-label ">
+                            待ち
+                        </label>
+                        <div class="">
+                            <select name="is_ryokei" class="nullbooleanselect form-control" id="is_ryokei">
+                                <option value="1" {% if 1 == is_ryokei %} selected{% endif %}>良形</option>
+                                <option value="0" {% if 0 == is_ryokei %} selected{% endif %}>愚形</option>
+                            </select>
+                        </div>
+                    </div>
+
                     <div id="div_id_hoju_rate" class="form-group"> <label for="id_hoju_rate" class="col-form-label ">
                             放銃率
                         </label>
                         <div class="">
                             <select name="hoju_rate" class="nullbooleanselect form-control" id="id_hoju_rate">
-                                <option value="5" {% if 5 == hoju_rate %} selected{% endif %}>5%</option>
-                                <option value="10" {% if 10 == hoju_rate %} selected{% endif %}>10%</option>
-                                <option value="15" {% if 15 == hoju_rate %} selected{% endif %}>15%</option>
-                                <option value="20" {% if 20 == hoju_rate %} selected{% endif %}>20%</option>
-                                <option value="25" {% if 25 == hoju_rate %} selected{% endif %}>25%</option>
+                                <option value="5" {% if 5 == hoju_rate %} selected{% endif %}>5%（例 : スジ9本 外側28）</option>
+                                <option value="10" {% if 10 == hoju_rate %} selected{% endif %}>10%（例 : スジ9本 無スジ28）</option>
+                                <option value="15" {% if 15 == hoju_rate %} selected{% endif %}>15%（例 : スジ12本 無スジ28）</option>
+                                <option value="20" {% if 20 == hoju_rate %} selected{% endif %}>20%（例 : スジ14本 無スジ28）</option>
+                                <option value="25" {% if 25 == hoju_rate %} selected{% endif %}>25%（例 : スジ16本 無スジ28）</option>
                             </select>
                         </div>
                     </div>
+
                     <div id="div_id_junme" class="form-group"> <label for="id_junme" class="col-form-label ">
                             順目
                         </label>
@@ -50,6 +87,7 @@
                             </select>
                         </div>
                     </div>
+
                     <div id="div_id_you_are_parent" class="form-group"> <label for="id_you_are_parent" class="col-form-label ">
                             自分
                         </label>
@@ -60,6 +98,7 @@
                             </select>
                         </div>
                     </div>
+
                     <div id="div_id_oponent_is_parent" class="form-group"> <label for="id_oponent_is_parent" class="col-form-label ">
                             相手
                         </label>
@@ -70,6 +109,7 @@
                             </select>
                         </div>
                     </div>
+
                     <!-- {{ filter.form|crispy }} -->
                 </div>
             </form>
@@ -77,19 +117,5 @@
                 <button type="submit" class="btn btn-secondary btn-block" form="filter">判定</button>
             </div>
         </div>
-
-        {% if judge %}
-            <div class="text-center" style="margin:10px;">
-            {% if should_push %}
-                <div class="alert alert-success">
-                    <strong>押し！</strong> 必要打点 : {{ required_point }}
-                </div>
-            {% else %}
-                <div class="alert alert-danger">
-                    <strong>降り！</strong> 必要打点 : {{ required_point }}
-                </div>
-            {% endif %}
-            </div>
-        {% endif %}
     </div>
 {% endblock %}

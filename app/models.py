@@ -342,6 +342,17 @@ class Comment(models.Model):
         """
         return self.comment
 class Oshihiki(models.Model):
+    point = models.FloatField(
+        verbose_name='点数',
+        blank=True,
+        null=True,
+    )
+
+    is_ryokei = models.BooleanField(
+        verbose_name='待ち',
+        default=True,
+        editable=False,
+    )
 
     hoju_rate = models.FloatField(
         verbose_name='放銃率',
@@ -351,12 +362,6 @@ class Oshihiki(models.Model):
 
     junme = models.IntegerField(
         verbose_name='順目',
-        blank=True,
-        null=True,
-    )
-
-    point = models.FloatField(
-        verbose_name='点数',
         blank=True,
         null=True,
     )
@@ -380,12 +385,24 @@ class Oshihiki(models.Model):
         """
         return self.point
 
-    def get_required_point(point, hoju_rate, junme, you_are_parent, oponent_is_parent):
-        oshihiki = Oshihiki.objects.filter(hoju_rate=hoju_rate, junme=junme)
+    def get_required_point(self, point, is_ryokei, hoju_rate, junme, you_are_parent, oponent_is_parent):
+        oshihiki = Oshihiki.objects.filter(
+            is_ryokei=is_ryokei, hoju_rate=hoju_rate, junme=junme, you_are_parent=you_are_parent, oponent_is_parent=oponent_is_parent)
+
+        if not oshihiki:
+            return None
 
         # TODO
-        # 親子判定ロジック
         # 和了価値指標計算
-        # 良形愚形
-
+        # 鳴きor門前
+        # 天鳳 or Mリーグルール
         return math.floor(oshihiki[0].point)
+
+    def get_parent_point(self, child_point):
+        PARENT_POINT_DICT = {
+            1000: 1500,
+            2000: 2900,
+            3900: 5800,
+            7700: 11600,
+        }
+        return PARENT_POINT_DICT[child_point]
