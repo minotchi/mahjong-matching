@@ -110,6 +110,17 @@
                         </div>
                     </div>
 
+                    <div id="div_id_is_dora" class="form-group"> <label for="id_is_dora" class="col-form-label ">
+                            一発 or ドラ
+                        </label>
+                        <div class="">
+                            <select name="is_dora" class="nullbooleanselect form-control" id="id_oponent_is_parent">
+                                <option value="0" {% if 0 == is_dora %} selected{% endif %}>No</option>
+                                <option value="1" {% if 1 == is_dora %} selected{% endif %}>Yes</option>
+                            </select>
+                        </div>
+                    </div>
+
                     <!-- {{ filter.form|crispy }} -->
                 </div>
             </form>

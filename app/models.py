@@ -379,15 +379,21 @@ class Oshihiki(models.Model):
         editable=False,
     )
 
+    is_dora = models.BooleanField(
+        verbose_name='一発 or ドラ',
+        default=False,
+        editable=False,
+    )
+
     def __str__(self):
         """
         リストボックスや管理画面での表示
         """
         return self.point
 
-    def get_required_point(self, point, is_ryokei, hoju_rate, junme, you_are_parent, oponent_is_parent):
+    def get_required_point(self, point, is_ryokei, hoju_rate, junme, you_are_parent, oponent_is_parent, is_dora):
         oshihiki = Oshihiki.objects.filter(
-            is_ryokei=is_ryokei, hoju_rate=hoju_rate, junme=junme, you_are_parent=you_are_parent, oponent_is_parent=oponent_is_parent)
+            is_ryokei=is_ryokei, hoju_rate=hoju_rate, junme=junme, you_are_parent=you_are_parent, oponent_is_parent=oponent_is_parent, is_dora=is_dora)
 
         if not oshihiki:
             return None
