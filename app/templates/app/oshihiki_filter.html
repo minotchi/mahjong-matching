@@ -10,7 +10,7 @@
 
         <div class="modal-content">
             <div class="modal-header">
-                <h5 class="modal-title">押し引き判定</h5>
+                <h5 class="modal-title">押し引き判定（副露 vs リーチ）</h5>
             </div>
 
             {% if cannot_judge %}
@@ -25,11 +25,11 @@
             <div class="text-center" style="margin:10px;">
                 {% if should_push %}
                 <div class="alert alert-success">
-                    <strong>押し！</strong> 必要打点 : {{ required_point }}
+                    <strong>押し！</strong> 必要打点 : {{ required_point }}点
                 </div>
                 {% else %}
                 <div class="alert alert-danger">
-                    <strong>降り！</strong> 必要打点 : {{ required_point }}
+                    <strong>降り！</strong> 必要打点 : {{ required_point }}点
                 </div>
                 {% endif %}
             </div>
