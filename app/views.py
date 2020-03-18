@@ -490,6 +490,13 @@ class OshihikiFilterView(FilterView):
         # 一覧画面内の遷移(GETクエリがある)ならクエリを保存する
         if request.GET:
             request.session['query'] = request.GET
+        # 詳細画面・登録画面からの遷移(GETクエリはない)ならクエリを復元する
+        else:
+            request.GET = request.GET.copy()
+            if 'query' in request.session.keys():
+                for key in request.session['query'].keys():
+                    request.GET[key] = request.session['query'][key]
+
         return super().get(request, **kwargs)
 
     def get_queryset(self):
