@@ -25,11 +25,11 @@
             <div class="text-center" style="margin:10px;">
                 {% if should_push %}
                 <div class="alert alert-success">
-                    <strong>押し！</strong> 必要打点 : {{ required_point }}点
+                    <strong>押し！</strong> 要求打点 : {{ required_point }}点
                 </div>
                 {% else %}
                 <div class="alert alert-danger">
-                    <strong>降り！</strong> 必要打点 : {{ required_point }}点
+                    <strong>降り！</strong> 要求打点 : {{ required_point }}点
                 </div>
                 {% endif %}
             </div>
@@ -38,14 +38,14 @@
             <form id="filter" method="get">
                 <div class="modal-body">
                     <div id="div_id_point" class="form-group"> <label for="id_point" class="col-form-label ">
-                            打点
+                            打点（供託1000点を含む）
                         </label>
                         <div class="">
                             <select name="point" class="nullbooleanselect form-control" id="point">
-                                <option value="1000" {% if 1000 == point %} selected{% endif %}>30符 1翻（子 : 1000点　親 : 1500点）</option>
-                                <option value="2000" {% if 2000 == point %} selected{% endif %}>30符 2翻（子 : 2000点　親 : 2900点）</option>
-                                <option value="3900" {% if 3900 == point %} selected{% endif %}>30符 3翻（子 : 3900点　親 : 5800点）</option>
-                                <option value="7700" {% if 7700 == point %} selected{% endif %}>30符 4翻（子 : 7700点　親 : 11600点）</option>
+                                <option value="2000" {% if 2000 == point %} selected{% endif %}>30符 1翻（子 : 2000点　親 : 2500点）</option>
+                                <option value="3000" {% if 3000 == point %} selected{% endif %}>30符 2翻（子 : 3000点　親 : 3900点）</option>
+                                <option value="4900" {% if 4900 == point %} selected{% endif %}>30符 3翻（子 : 4900点　親 : 6800点）</option>
+                                <option value="8700" {% if 8700 == point %} selected{% endif %}>30符 4翻（子 : 8700点　親 : 12600点）</option>
                             </select>
                         </div>
                     </div>

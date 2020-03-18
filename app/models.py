@@ -406,9 +406,9 @@ class Oshihiki(models.Model):
 
     def get_parent_point(self, child_point):
         PARENT_POINT_DICT = {
-            1000: 1500,
-            2000: 2900,
-            3900: 5800,
-            7700: 11600,
+            2000: 2500,
+            3000: 3900,
+            4900: 6800,
+            8700: 12600,
         }
         return PARENT_POINT_DICT[child_point]
