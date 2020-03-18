@@ -544,5 +544,7 @@ class OshihikiFilterView(FilterView):
             kwargs['judge'] = False
         except TypeError:
             kwargs['judge'] = False
+        except KeyError:
+            kwargs['judge'] = False
 
         return super().get_context_data(object_list=object_list, **kwargs)
