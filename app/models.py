@@ -342,6 +342,7 @@ class Comment(models.Model):
         """
         return self.comment
 class Oshihiki(models.Model):
+    HONBA = 300
     point = models.FloatField(
         verbose_name='点数',
         blank=True,
@@ -406,9 +407,48 @@ class Oshihiki(models.Model):
 
     def get_parent_point(self, child_point):
         PARENT_POINT_DICT = {
-            2000: 2500,
-            3000: 3900,
-            4900: 6800,
-            8700: 12600,
+            1000: 1500,
+            2000: 2900,
+            3900: 5800,
+            7700: 11600,
         }
         return PARENT_POINT_DICT[child_point]
+
+    def get_point_option(self):
+        point_option = []
+        point_option.append({'fu': 30, 'han': 1, 'child_point': 1000, 'parent_point': 1500})
+        point_option.append({'fu': 30, 'han': 2, 'child_point': 2000, 'parent_point': 2900})
+        point_option.append({'fu': 30, 'han': 3, 'child_point': 3900, 'parent_point': 5800})
+        point_option.append({'fu': 30, 'han': 4, 'child_point': 7700, 'parent_point': 11600})
+
+        return point_option
+
+    def get_hoju_rate_option(self):
+        hoju_rate_option = []
+        hoju_rate_option.append({'value': 5, 'example': 'スジ9本 外側28'})
+        hoju_rate_option.append({'value': 10, 'example': 'スジ9本 無スジ28'})
+        hoju_rate_option.append({'value': 15, 'example': 'スジ12本 無スジ28'})
+        hoju_rate_option.append({'value': 20, 'example': 'スジ14本 無スジ28'})
+        hoju_rate_option.append({'value': 25, 'example': 'スジ16本 無スジ28'})
+
+        return hoju_rate_option
+
+    def get_kyotaku_option(self):
+        kyotaku_option = []
+        for i in range(1, 10, 1):
+            kyotaku = {'num': i, 'point': i * 1000}
+            kyotaku_option.append(kyotaku)
+
+        return kyotaku_option
+
+    def get_honba_option(self):
+        honba_option = []
+        for i in range(0, 10, 1):
+            honba = {'num': i, 'point': i * self.HONBA}
+            honba_option.append(honba)
+
+        return honba_option
+
+    def get_your_point(self, point, kyotaku, honba):
+
+        return point + kyotaku * 1000 + honba * self.HONBA

@@ -25,11 +25,11 @@
             <div class="text-center" style="margin:10px;">
                 {% if should_push %}
                 <div class="alert alert-success">
-                    <strong>押し！</strong> 要求打点 : {{ required_point }}点
+                    <strong>押し！</strong> 打点（{{ your_point }}点）≧ 要求打点（{{ required_point }}点）
                 </div>
                 {% else %}
                 <div class="alert alert-danger">
-                    <strong>降り！</strong> 要求打点 : {{ required_point }}点
+                    <strong>降り！</strong> 打点（{{ your_point }}点）< 要求打点（{{ required_point }}点）
                 </div>
                 {% endif %}
             </div>
@@ -38,14 +38,37 @@
             <form id="filter" method="get">
                 <div class="modal-body">
                     <div id="div_id_point" class="form-group"> <label for="id_point" class="col-form-label ">
-                            打点（供託1000点を含む）
+                            打点
                         </label>
                         <div class="">
-                            <select name="point" class="nullbooleanselect form-control" id="point">
-                                <option value="2000" {% if 2000 == point %} selected{% endif %}>30符 1翻（子 : 2000点　親 : 2500点）</option>
-                                <option value="3000" {% if 3000 == point %} selected{% endif %}>30符 2翻（子 : 3000点　親 : 3900点）</option>
-                                <option value="4900" {% if 4900 == point %} selected{% endif %}>30符 3翻（子 : 4900点　親 : 6800点）</option>
-                                <option value="8700" {% if 8700 == point %} selected{% endif %}>30符 4翻（子 : 8700点　親 : 12600点）</option>
+                            <select name="point" class="form-control" id="point">
+                                {% for p in point_option %}
+                                <option value="{{ p.child_point|stringformat:"i" }}" {% if p.child_point == point %} selected{% endif %}>{{ p.fu }}符 {{ p.han }}翻（子: {{ p.child_point }}点　親: {{ p.parent_point }}点）</option>
+                                {% endfor %}
+                            </select>
+                        </div>
+                    </div>
+
+                    <div id="div_id_kyotaku" class="form-group"> <label for="id_kyotaku" class="col-form-label ">
+                            供託
+                        </label>
+                        <div class="">
+                            <select name="kyotaku" class="form-control" id="kyotaku">
+                                {% for p in kyotaku_option %}
+                                <option value="{{ p.num }}" {% if p.num == kyotaku %} selected{% endif %}>{{ p.num }}本（{{ p.point }}点）</option>
+                                {% endfor %}
+                            </select>
+                        </div>
+                    </div>
+
+                    <div id="div_id_honba" class="form-group"> <label for="id_honba" class="col-form-label ">
+                            本場
+                        </label>
+                        <div class="">
+                            <select name="honba" class="form-control" id="honba">
+                                {% for p in honba_option %}
+                                <option value="{{ p.num }}" {% if p.num == honba %} selected{% endif %}>{{ p.num }}本場（{{ p.point }}点）</option>
+                                {% endfor %}
                             </select>
                         </div>
                     </div>
@@ -55,7 +78,7 @@
                             待ち
                         </label>
                         <div class="">
-                            <select name="is_ryokei" class="nullbooleanselect form-control" id="is_ryokei">
+                            <select name="is_ryokei" class="form-control" id="is_ryokei">
                                 <option value="1" {% if 1 == is_ryokei %} selected{% endif %}>良形</option>
                                 <option value="0" {% if 0 == is_ryokei %} selected{% endif %}>愚形</option>
                             </select>
@@ -66,12 +89,10 @@
                             放銃率
                         </label>
                         <div class="">
-                            <select name="hoju_rate" class="nullbooleanselect form-control" id="id_hoju_rate">
-                                <option value="5" {% if 5 == hoju_rate %} selected{% endif %}>5%（例 : スジ9本 外側28）</option>
-                                <option value="10" {% if 10 == hoju_rate %} selected{% endif %}>10%（例 : スジ9本 無スジ28）</option>
-                                <option value="15" {% if 15 == hoju_rate %} selected{% endif %}>15%（例 : スジ12本 無スジ28）</option>
-                                <option value="20" {% if 20 == hoju_rate %} selected{% endif %}>20%（例 : スジ14本 無スジ28）</option>
-                                <option value="25" {% if 25 == hoju_rate %} selected{% endif %}>25%（例 : スジ16本 無スジ28）</option>
+                            <select name="hoju_rate" class="form-control" id="id_hoju_rate">
+                                {% for p in hoju_rate_option %}
+                                <option value="{{ p.value|stringformat:"i" }}" {% if p.value == hoju_rate %} selected{% endif %}>{{ p.value }}%（例 : {{ p.example }}）</option>
+                                {% endfor %}
                             </select>
                         </div>
                     </div>
@@ -80,7 +101,7 @@
                             順目
                         </label>
                         <div class="">
-                            <select name="junme" class="nullbooleanselect form-control" id="junme">
+                            <select name="junme" class="form-control" id="junme">
                                 <option value="8" {% if 8 == junme %} selected{% endif %}>8順目</option>
                                 <option value="11" {% if 11 == junme %} selected{% endif %}>11順目</option>
                                 <option value="14" {% if 14 == junme %} selected{% endif %}>14順目</option>
