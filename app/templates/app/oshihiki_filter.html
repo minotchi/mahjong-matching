@@ -25,11 +25,13 @@
             <div class="text-center" style="margin:10px;">
                 {% if should_push %}
                 <div class="alert alert-success">
-                    <strong>押し！</strong> 打点（{{ your_point }}点）≧ 要求打点（{{ required_point }}点）
+                    <div style="font-size: 24px;font-weight: bold;">押し！</div>
+                    <div style="font-size: 14px;">打点（{{ your_point }}点）≧ 要求打点（{{ required_point }}点）</div>
                 </div>
                 {% else %}
                 <div class="alert alert-danger">
-                    <strong>降り！</strong> 打点（{{ your_point }}点）< 要求打点（{{ required_point }}点）
+                    <div style="font-size: 24px;font-weight: bold;">降り！</div>
+                    <div style="font-size: 14px;">打点（{{ your_point }}点）< 要求打点（{{ required_point }}点）</div>
                 </div>
                 {% endif %}
             </div>
