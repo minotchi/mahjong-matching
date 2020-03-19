@@ -449,6 +449,6 @@ class Oshihiki(models.Model):
 
         return honba_option
 
-    def get_your_point(self, point, kyotaku, honba):
+    def get_your_point(self, point, kyotaku):
 
-        return point + kyotaku * 1000 + honba * self.HONBA
+        return point + kyotaku * 1000

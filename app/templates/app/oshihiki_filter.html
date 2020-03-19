@@ -63,18 +63,6 @@
                         </div>
                     </div>
 
-                    <div id="div_id_honba" class="form-group"> <label for="id_honba" class="col-form-label ">
-                            本場
-                        </label>
-                        <div class="">
-                            <select name="honba" class="form-control" id="honba">
-                                {% for p in honba_option %}
-                                <option value="{{ p.num }}" {% if p.num == honba %} selected{% endif %}>{{ p.num }}本場（{{ p.point }}点）</option>
-                                {% endfor %}
-                            </select>
-                        </div>
-                    </div>
-
                     <div id="div_id_is_ryokei" class="form-group">
                         <label for="is_ryokei" class="col-form-label ">
                             待ち

@@ -516,7 +516,6 @@ class OshihikiFilterView(FilterView):
         try:
             point = int(self.request.GET.get("point"))
             kyotaku = int(self.request.GET.get("kyotaku"))
-            honba = int(self.request.GET.get("honba"))
             is_ryokei = int(self.request.GET.get("is_ryokei"))
             hoju_rate = int(self.request.GET.get("hoju_rate"))
             junme = int(self.request.GET.get("junme"))
@@ -532,7 +531,6 @@ class OshihikiFilterView(FilterView):
             kwargs['oponent_is_parent'] = oponent_is_parent
             kwargs['is_dora'] = is_dora
             kwargs['kyotaku'] = kyotaku
-            kwargs['honba'] = honba
 
             required_point = oshihiki.get_required_point(point, is_ryokei, hoju_rate, junme, you_are_parent, oponent_is_parent, is_dora)
 
@@ -546,7 +544,7 @@ class OshihikiFilterView(FilterView):
                 if you_are_parent == 1:
                     point = oshihiki.get_parent_point(point)
 
-                your_point = oshihiki.get_your_point(point, kyotaku, honba)
+                your_point = oshihiki.get_your_point(point, kyotaku)
                 kwargs['your_point'] = your_point
                 kwargs['should_push'] = your_point >= required_point
                 kwargs['judge'] = True
