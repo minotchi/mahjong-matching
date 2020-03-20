@@ -1,4 +1,6 @@
 import math
+import decimal
+
 from django.db import models
 
 from users.models import User
@@ -392,18 +394,30 @@ class Oshihiki(models.Model):
         """
         return self.point
 
-    def get_required_point(self, point, is_ryokei, hoju_rate, junme, you_are_parent, oponent_is_parent, is_dora):
+    def get_required_point(self, rule, ba, own_point, point, is_ryokei, hoju_rate, junme, you_are_parent, oponent_is_parent, is_dora):
         oshihiki = Oshihiki.objects.filter(
             is_ryokei=is_ryokei, hoju_rate=hoju_rate, junme=junme, you_are_parent=you_are_parent, oponent_is_parent=oponent_is_parent, is_dora=is_dora)
 
         if not oshihiki:
             return None
 
+        # 和了価値指標
+        hora_value_index = Hora_value_index.objects.filter(
+            rule=rule, ba=ba, own_point=own_point)
+
+        if not hora_value_index:
+            return None
+
+        required_point = oshihiki[0].point
+        hora_value_index_value = hora_value_index[0].value
+
+        required_point /= hora_value_index_value
+
+        required_point = round(required_point, -2)
+
         # TODO
-        # 和了価値指標計算
         # 鳴きor門前
-        # 天鳳 or Mリーグルール
-        return math.floor(oshihiki[0].point)
+        return math.floor(required_point)
 
     def get_parent_point(self, child_point):
         PARENT_POINT_DICT = {
@@ -413,6 +427,34 @@ class Oshihiki(models.Model):
             7700: 11600,
         }
         return PARENT_POINT_DICT[child_point]
+
+    def get_rule_option(self):
+        rule_option = []
+        rule_option.append({'id': 2, 'title': '天鳳ルール（段位戦・七段）'})
+        rule_option.append(
+            {'id': 1, 'title': 'Mリーグルール（25,000点持ち 30,000点返し ウマ1-3）'})
+
+        return rule_option
+
+    def get_ba_option(self):
+        ba_option = []
+        ba_option.append({'id': 1, 'title': '東1局'})
+        ba_option.append({'id': 2, 'title': '東2局'})
+        ba_option.append({'id': 3, 'title': '東3局'})
+        ba_option.append({'id': 4, 'title': '東4局'})
+        ba_option.append({'id': 5, 'title': '南1局'})
+        ba_option.append({'id': 6, 'title': '南2局'})
+
+        return ba_option
+
+    def get_own_point_option(self):
+        own_point_option = []
+        own_point_option.append({'point': 15000, 'title': '14,000点 ~ 16,000点'})
+        own_point_option.append({'point': 25000, 'title': '24,000点 ~ 26,000点'})
+        own_point_option.append({'point': 35000, 'title': '34,000点 ~ 36,000点'})
+        own_point_option.append({'point': 45000, 'title': '44,000点 ~ 46,000点'})
+
+        return own_point_option
 
     def get_point_option(self):
         point_option = []
@@ -452,3 +494,34 @@ class Oshihiki(models.Model):
     def get_your_point(self, point, kyotaku):
 
         return point + kyotaku * 1000
+
+class Hora_value_index(models.Model):
+    value = models.FloatField(
+        verbose_name='和了価値指標',
+        blank=False,
+        null=False,
+    )
+
+    rule = models.IntegerField(
+        verbose_name='ルール',
+        blank=False,
+        null=False,
+    )
+
+    ba = models.IntegerField(
+        verbose_name='場',
+        blank=False,
+        null=False,
+    )
+
+    own_point = models.FloatField(
+        verbose_name='自分の持ち点',
+        blank=False,
+        null=False,
+    )
+
+    def __str__(self):
+        """
+        リストボックスや管理画面での表示
+        """
+        return self.value

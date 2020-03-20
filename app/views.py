@@ -501,12 +501,19 @@ class OshihikiFilterView(FilterView):
 
     def get_context_data(self, *, object_list=None, **kwargs):
         oshihiki = Oshihiki()
+        kwargs['rule_option'] = oshihiki.get_rule_option()
+        kwargs['ba_option'] = oshihiki.get_ba_option()
+        kwargs['own_point_option'] = oshihiki.get_own_point_option()
         kwargs['point_option'] = oshihiki.get_point_option()
         kwargs['kyotaku_option'] = oshihiki.get_kyotaku_option()
         kwargs['honba_option'] = oshihiki.get_honba_option()
         kwargs['hoju_rate_option'] = oshihiki.get_hoju_rate_option()
+        kwargs['own_point'] = 25000
 
         try:
+            rule = int(self.request.GET.get("rule"))
+            ba = int(self.request.GET.get("ba"))
+            own_point = int(self.request.GET.get("own_point"))
             point = int(self.request.GET.get("point"))
             kyotaku = int(self.request.GET.get("kyotaku"))
             is_ryokei = int(self.request.GET.get("is_ryokei"))
@@ -516,6 +523,9 @@ class OshihikiFilterView(FilterView):
             oponent_is_parent = int(self.request.GET.get("oponent_is_parent"))
             is_dora = int(self.request.GET.get("is_dora"))
 
+            kwargs['rule'] = rule
+            kwargs['ba'] = ba
+            kwargs['own_point'] = own_point
             kwargs['point'] = point
             kwargs['is_ryokei'] = is_ryokei
             kwargs['hoju_rate'] = hoju_rate
@@ -525,7 +535,8 @@ class OshihikiFilterView(FilterView):
             kwargs['is_dora'] = is_dora
             kwargs['kyotaku'] = kyotaku
 
-            required_point = oshihiki.get_required_point(point, is_ryokei, hoju_rate, junme, you_are_parent, oponent_is_parent, is_dora)
+            required_point = oshihiki.get_required_point(
+                rule, ba, own_point, point, is_ryokei, hoju_rate, junme, you_are_parent, oponent_is_parent, is_dora)
 
             if required_point is None:
                 kwargs['cannot_judge'] = True

@@ -39,6 +39,43 @@
 
             <form id="filter" method="get">
                 <div class="modal-body">
+
+                    <div id="div_id_rule" class="form-group"> <label for="id_rule" class="col-form-label ">
+                            ルール
+                        </label>
+                        <div class="">
+                            <select name="rule" class="form-control" id="rule">
+                                {% for p in rule_option %}
+                                <option value="{{ p.id|stringformat:"i" }}" {% if p.id == rule %} selected{% endif %}>{{ p.title }}</option>
+                                {% endfor %}
+                            </select>
+                        </div>
+                    </div>
+
+                    <div id="div_id_ba" class="form-group"> <label for="id_ba" class="col-form-label ">
+                            場
+                        </label>
+                        <div class="">
+                            <select name="ba" class="form-control" id="ba">
+                                {% for p in ba_option %}
+                                <option value="{{ p.id|stringformat:"i" }}" {% if p.id == ba %} selected{% endif %}>{{ p.title }}</option>
+                                {% endfor %}
+                            </select>
+                        </div>
+                    </div>
+
+                    <div id="div_id_own_point" class="form-group"> <label for="id_own_point" class="col-form-label ">
+                            持ち点
+                        </label>
+                        <div class="">
+                            <select name="own_point" class="form-control" id="own_point">
+                                {% for p in own_point_option %}
+                                <option value="{{ p.point|stringformat:"i" }}" {% if p.point == own_point %} selected{% endif %}>{{ p.title }}</option>
+                                {% endfor %}
+                            </select>
+                        </div>
+                    </div>
+
                     <div id="div_id_point" class="form-group"> <label for="id_point" class="col-form-label ">
                             打点
                         </label>
@@ -140,4 +177,11 @@
             </div>
         </div>
     </div>
+        <div class="text-center py-3">
+            <p>
+                参考文献<br>
+                <a href="https://amzn.to/2IYJhtJ"> 「統計学」のマージャン戦術</a><br>
+                <a href="https://note.com/unimaru_shikura/n/nf759b8f1a0c7">副露テンパイ vs リーチ 押し引き表</a>
+            </p>
+        </div>
 {% endblock %}
