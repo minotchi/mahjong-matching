@@ -485,7 +485,7 @@ class Oshihiki(models.Model):
 
     def get_kyotaku_option(self):
         kyotaku_option = []
-        for i in range(1, 6, 1):
+        for i in range(1, 4, 1):
             kyotaku = {'num': i, 'point': i * 1000}
             kyotaku_option.append(kyotaku)
 

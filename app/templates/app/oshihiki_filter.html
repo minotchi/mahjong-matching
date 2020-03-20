@@ -44,7 +44,7 @@
                             <legend class="col-form-label col-sm-2 pt-0">ルール</legend>
                             <div class="col-sm-10">
                             {% for p in rule_option %}
-                                <div class="custom-control custom-radio custom-control-inline">
+                                <div class="custom-control custom-radio">
                                     <input class="custom-control-input" type="radio" name="rule" id="rule{{ p.id|stringformat:"i" }}"
                                         value="{{ p.id|stringformat:"i" }}" {% if p.id == rule %} checked{% endif %}>
                                     <label class="custom-control-label" for="rule{{ p.id|stringformat:"i" }}">
@@ -61,7 +61,7 @@
                             <legend class="col-form-label col-sm-2 pt-0">場</legend>
                             <div class="col-sm-10">
                                 {% for p in ba_option %}
-                                <div class="custom-control custom-radio custom-control-inline">
+                                <div class="custom-control custom-radio">
                                     <input class="custom-control-input" type="radio" name="ba" id="ba_{{ p.id }}"
                                         value="{{ p.id }}" {% if p.id == ba %} checked{% endif %}>
                                     <label class="custom-control-label" for="ba_{{ p.id }}">
@@ -77,14 +77,15 @@
                         <div class="row">
                             <legend class="col-form-label col-sm-2 pt-0">持ち点</legend>
                             <div class="col-sm-10">
-                                <div class="">
-                                    <select name="own_point" class="form-control" id="own_point">
-                                        {% for p in own_point_option %}
-                                        <option value="{{ p.point|stringformat:"i" }}" {% if p.point == own_point %} selected{% endif %}>{{ p.title }}
-                                        </option>
-                                        {% endfor %}
-                                    </select>
+                                {% for p in own_point_option %}
+                                <div class="custom-control custom-radio">
+                                    <input class="custom-control-input" type="radio" name="own_point" id="own_point_{{ p.point|stringformat:"i" }}"
+                                        value="{{ p.point|stringformat:"i" }}" {% if p.point == own_point %} checked{% endif %}>
+                                    <label class="custom-control-label" for="own_point_{{ p.point|stringformat:"i" }}">
+                                        {{ p.title }}
+                                    </label>
                                 </div>
+                                {% endfor %}
                             </div>
                         </div>
                     </fieldset>
@@ -93,14 +94,15 @@
                         <div class="row">
                             <legend class="col-form-label col-sm-2 pt-0">打点</legend>
                             <div class="col-sm-10">
-                                <div class="">
-                                    <select name="point" class="form-control" id="point">
-                                        {% for p in point_option %}
-                                        <option value="{{ p.child_point|stringformat:"i" }}" {% if p.child_point == point %} selected{% endif %}>{{ p.fu }}符
-                                            {{ p.han }}翻（子: {{ p.child_point }}点　親: {{ p.parent_point }}点）</option>
-                                        {% endfor %}
-                                    </select>
+                                {% for p in point_option %}
+                                <div class="custom-control custom-radio">
+                                    <input class="custom-control-input" type="radio" name="point" id="point_{{ p.child_point|stringformat:"i" }}"
+                                        value="{{ p.child_point|stringformat:"i" }}" {% if p.child_point == point %} checked{% endif %}>
+                                    <label class="custom-control-label" for="point_{{ p.child_point|stringformat:"i" }}">
+                                        {{ p.fu }}符{{ p.han }}翻（子: {{ p.child_point }}点 親: {{ p.parent_point }}点）
+                                    </label>
                                 </div>
+                                {% endfor %}
                             </div>
                         </div>
                     </fieldset>
@@ -126,14 +128,14 @@
                         <div class="row">
                             <legend class="col-form-label col-sm-2 pt-0">待ち</legend>
                             <div class="col-sm-10">
-                                <div class="custom-control custom-radio custom-control-inline">
+                                <div class="custom-control custom-radio">
                                     <input class="custom-control-input" type="radio" name="is_ryokei" id="is_ryokei_1" value="1" {% if 1 == is_ryokei %}
                                         checked{% endif %}>
                                     <label class="custom-control-label" for="is_ryokei_1">
                                         良形
                                     </label>
                                 </div>
-                                <div class="custom-control custom-radio custom-control-inline">
+                                <div class="custom-control custom-radio">
                                     <input class="custom-control-input" type="radio" name="is_ryokei" id="is_ryokei_0" value="0" {% if 0 == is_ryokei %}
                                         checked{% endif %}>
                                     <label class="custom-control-label" for="is_ryokei_0">
@@ -166,7 +168,7 @@
                             <legend class="col-form-label col-sm-2 pt-0">順目</legend>
                             <div class="col-sm-10">
                                 {% for p in junme_option %}
-                                <div class="custom-control custom-radio custom-control-inline">
+                                <div class="custom-control custom-radio">
                                     <input class="custom-control-input" type="radio" name="junme" id="junme_{{ p.value }}" value="{{ p.value }}"
                                         {% if p.value == junme %} checked{% endif %}>
                                     <label class="custom-control-label" for="junme_{{ p.value }}">
@@ -182,14 +184,14 @@
                         <div class="row">
                             <legend class="col-form-label col-sm-2 pt-0">自分</legend>
                             <div class="col-sm-10">
-                                <div class="custom-control custom-radio custom-control-inline">
+                                <div class="custom-control custom-radio">
                                     <input class="custom-control-input" type="radio" name="you_are_parent" id="you_are_parent_0" value="0"
                                         {% if 0 == you_are_parent %} checked{% endif %}>
                                     <label class="custom-control-label" for="you_are_parent_0">
                                         子
                                     </label>
                                 </div>
-                                <div class="custom-control custom-radio custom-control-inline">
+                                <div class="custom-control custom-radio">
                                     <input class="custom-control-input" type="radio" name="you_are_parent" id="you_are_parent_1" value="1"
                                         {% if 1 == you_are_parent %} checked{% endif %}>
                                     <label class="custom-control-label" for="you_are_parent_1">
@@ -204,14 +206,14 @@
                         <div class="row">
                             <legend class="col-form-label col-sm-2 pt-0">相手</legend>
                             <div class="col-sm-10">
-                                <div class="custom-control custom-radio custom-control-inline">
+                                <div class="custom-control custom-radio">
                                     <input class="custom-control-input" type="radio" name="oponent_is_parent" id="oponent_is_parent_0" value="0"
                                         {% if 0 == oponent_is_parent %} checked{% endif %}>
                                     <label class="custom-control-label" for="oponent_is_parent_0">
                                         子
                                     </label>
                                 </div>
-                                <div class="custom-control custom-radio custom-control-inline">
+                                <div class="custom-control custom-radio">
                                     <input class="custom-control-input" type="radio" name="oponent_is_parent" id="oponent_is_parent_1" value="1"
                                         {% if 1 == oponent_is_parent %} checked{% endif %}>
                                     <label class="custom-control-label" for="oponent_is_parent_1">
@@ -226,11 +228,18 @@
                         <div class="row">
                             <legend class="col-form-label col-sm-2 pt-0">一発 or ドラ or 赤牌</legend>
                             <div class="col-sm-10">
-                                <div class="custom-control custom-radio custom-control-inline">
-                                    <input type="hidden" name="is_dora" value="0">
-                                    <input class="form-check-input" type="checkbox" name="is_dora" value="1" id="is_dora" {% if 1 == is_dora %}
-                                        checked{% endif %}>
-                                    <label class="form-check-label" for="is_dora">
+
+                                <div class="custom-control custom-radio">
+                                    <input class="custom-control-input" type="radio" name="is_dora" id="is_dora_0" value="0"
+                                        {% if 0 == is_dora %} checked{% endif %}>
+                                    <label class="custom-control-label" for="is_dora_0">
+                                        No
+                                    </label>
+                                </div>
+                                <div class="custom-control custom-radio">
+                                    <input class="custom-control-input" type="radio" name="is_dora" id="is_dora_1" value="1"
+                                        {% if 1 == is_dora %} checked{% endif %}>
+                                    <label class="custom-control-label" for="is_dora_1">
                                         Yes
                                     </label>
                                 </div>
