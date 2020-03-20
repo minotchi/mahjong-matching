@@ -1,0 +1,31 @@
+.custom-control-input:checked~.custom-control-label.green::before {
+  background-color: #2cb696;
+}
+button.green {
+  background-color: #2cb696;
+  border-color: #2cb696;
+  color: white;
+  font-weight: 700;
+}
+
+a {
+  color: #787c7b;
+}
+
+.alert-success {
+    color: #fff;
+    background-color: #2cb696;
+}
+.alert-danger {
+    color: #fff;
+    background-color: #C94055;
+}
+
+h5 {
+    font-size: 100%;
+    font-weight: 700;
+}
+
+.col-form-label {
+    font-weight: 700;
+}

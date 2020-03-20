@@ -16,7 +16,7 @@
             {% if cannot_judge %}
             <div class="text-center" style="margin:10px;">
                 <div class="alert alert-danger">
-                    <div style="font-size: 24px;font-weight: bold;">判定できません</div>
+                    <div style="font-size: 20px;">判定できません</div>
                 </div>
             </div>
             {% endif %}
@@ -25,12 +25,12 @@
             <div class="text-center" style="margin:10px;">
                 {% if should_push %}
                 <div class="alert alert-success">
-                    <div style="font-size: 24px;font-weight: bold;">押し！</div>
+                    <div style="font-size: 20px;">押し！</div>
                     <div style="font-size: 14px;">打点（{{ your_point }}点）≧ 要求打点（{{ required_point }}点）</div>
                 </div>
                 {% else %}
                 <div class="alert alert-danger">
-                    <div style="font-size: 24px;font-weight: bold;">降り！</div>
+                    <div style="font-size: 20px;">降り！</div>
                     <div style="font-size: 14px;">打点（{{ your_point }}点）< 要求打点（{{ required_point }}点）</div>
                 </div>
                 {% endif %}
@@ -47,7 +47,7 @@
                                 <div class="custom-control custom-radio">
                                     <input class="custom-control-input" type="radio" name="rule" id="rule{{ p.id|stringformat:"i" }}"
                                         value="{{ p.id|stringformat:"i" }}" {% if p.id == rule %} checked{% endif %}>
-                                    <label class="custom-control-label" for="rule{{ p.id|stringformat:"i" }}">
+                                    <label class="custom-control-label green" for="rule{{ p.id|stringformat:"i" }}">
                                         {{ p.title }}
                                     </label>
                                 </div>
@@ -64,7 +64,7 @@
                                 <div class="custom-control custom-radio">
                                     <input class="custom-control-input" type="radio" name="ba" id="ba_{{ p.id }}"
                                         value="{{ p.id }}" {% if p.id == ba %} checked{% endif %}>
-                                    <label class="custom-control-label" for="ba_{{ p.id }}">
+                                    <label class="custom-control-label green" for="ba_{{ p.id }}">
                                         {{ p.title }}
                                     </label>
                                 </div>
@@ -81,7 +81,7 @@
                                 <div class="custom-control custom-radio">
                                     <input class="custom-control-input" type="radio" name="own_point" id="own_point_{{ p.point|stringformat:"i" }}"
                                         value="{{ p.point|stringformat:"i" }}" {% if p.point == own_point %} checked{% endif %}>
-                                    <label class="custom-control-label" for="own_point_{{ p.point|stringformat:"i" }}">
+                                    <label class="custom-control-label green" for="own_point_{{ p.point|stringformat:"i" }}">
                                         {{ p.title }}
                                     </label>
                                 </div>
@@ -98,8 +98,8 @@
                                 <div class="custom-control custom-radio">
                                     <input class="custom-control-input" type="radio" name="point" id="point_{{ p.child_point|stringformat:"i" }}"
                                         value="{{ p.child_point|stringformat:"i" }}" {% if p.child_point == point %} checked{% endif %}>
-                                    <label class="custom-control-label" for="point_{{ p.child_point|stringformat:"i" }}">
-                                        {{ p.fu }}符{{ p.han }}翻（子: {{ p.child_point }}点 親: {{ p.parent_point }}点）
+                                    <label class="custom-control-label green" for="point_{{ p.child_point|stringformat:"i" }}">
+                                        {{ p.fu }}符{{ p.han }}翻（子 {{ p.child_point }}点 親 {{ p.parent_point }}点）
                                     </label>
                                 </div>
                                 {% endfor %}
@@ -115,7 +115,7 @@
                                 <div class="custom-control custom-radio">
                                     <input class="custom-control-input" type="radio" name="kyotaku" id="kyotaku_{{ p.num }}"
                                         value="{{ p.num }}" {% if p.num == kyotaku %} checked{% endif %}>
-                                    <label class="custom-control-label" for="kyotaku_{{ p.num }}">
+                                    <label class="custom-control-label green" for="kyotaku_{{ p.num }}">
                                         {{ p.num }}本（{{ p.point }}点）
                                     </label>
                                 </div>
@@ -131,14 +131,14 @@
                                 <div class="custom-control custom-radio">
                                     <input class="custom-control-input" type="radio" name="is_ryokei" id="is_ryokei_1" value="1" {% if 1 == is_ryokei %}
                                         checked{% endif %}>
-                                    <label class="custom-control-label" for="is_ryokei_1">
+                                    <label class="custom-control-label green" for="is_ryokei_1">
                                         良形
                                     </label>
                                 </div>
                                 <div class="custom-control custom-radio">
                                     <input class="custom-control-input" type="radio" name="is_ryokei" id="is_ryokei_0" value="0" {% if 0 == is_ryokei %}
                                         checked{% endif %}>
-                                    <label class="custom-control-label" for="is_ryokei_0">
+                                    <label class="custom-control-label green" for="is_ryokei_0">
                                         愚形
                                     </label>
                                 </div>
@@ -154,7 +154,7 @@
                                 <div class="custom-control custom-radio">
                                     <input class="custom-control-input" type="radio" name="hoju_rate" id="hoju_rate_{{ p.value }}" value="{{ p.value }}"
                                         {% if p.value == hoju_rate %} checked{% endif %}>
-                                    <label class="custom-control-label" for="hoju_rate_{{ p.value }}">
+                                    <label class="custom-control-label green" for="hoju_rate_{{ p.value }}">
                                         {{ p.value }}%（例: {{ p.example }}）
                                     </label>
                                 </div>
@@ -171,7 +171,7 @@
                                 <div class="custom-control custom-radio">
                                     <input class="custom-control-input" type="radio" name="junme" id="junme_{{ p.value }}" value="{{ p.value }}"
                                         {% if p.value == junme %} checked{% endif %}>
-                                    <label class="custom-control-label" for="junme_{{ p.value }}">
+                                    <label class="custom-control-label green" for="junme_{{ p.value }}">
                                         {{ p.value }}順目
                                     </label>
                                 </div>
@@ -187,14 +187,14 @@
                                 <div class="custom-control custom-radio">
                                     <input class="custom-control-input" type="radio" name="you_are_parent" id="you_are_parent_0" value="0"
                                         {% if 0 == you_are_parent %} checked{% endif %}>
-                                    <label class="custom-control-label" for="you_are_parent_0">
+                                    <label class="custom-control-label green" for="you_are_parent_0">
                                         子
                                     </label>
                                 </div>
                                 <div class="custom-control custom-radio">
                                     <input class="custom-control-input" type="radio" name="you_are_parent" id="you_are_parent_1" value="1"
                                         {% if 1 == you_are_parent %} checked{% endif %}>
-                                    <label class="custom-control-label" for="you_are_parent_1">
+                                    <label class="custom-control-label green" for="you_are_parent_1">
                                         親
                                     </label>
                                 </div>
@@ -209,14 +209,14 @@
                                 <div class="custom-control custom-radio">
                                     <input class="custom-control-input" type="radio" name="oponent_is_parent" id="oponent_is_parent_0" value="0"
                                         {% if 0 == oponent_is_parent %} checked{% endif %}>
-                                    <label class="custom-control-label" for="oponent_is_parent_0">
+                                    <label class="custom-control-label green" for="oponent_is_parent_0">
                                         子
                                     </label>
                                 </div>
                                 <div class="custom-control custom-radio">
                                     <input class="custom-control-input" type="radio" name="oponent_is_parent" id="oponent_is_parent_1" value="1"
                                         {% if 1 == oponent_is_parent %} checked{% endif %}>
-                                    <label class="custom-control-label" for="oponent_is_parent_1">
+                                    <label class="custom-control-label green" for="oponent_is_parent_1">
                                         親
                                     </label>
                                 </div>
@@ -226,21 +226,20 @@
 
                     <fieldset class="form-group">
                         <div class="row">
-                            <legend class="col-form-label col-sm-2 pt-0">一発 or ドラ or 赤牌</legend>
+                            <legend class="col-form-label col-sm-2 pt-0">一発 or ドラ</legend>
                             <div class="col-sm-10">
-
                                 <div class="custom-control custom-radio">
-                                    <input class="custom-control-input" type="radio" name="is_dora" id="is_dora_0" value="0"
-                                        {% if 0 == is_dora %} checked{% endif %}>
-                                    <label class="custom-control-label" for="is_dora_0">
-                                        No
+                                    <input class="custom-control-input" type="radio" name="is_dora" id="is_dora_1" value="1" {% if 1 == is_dora %}
+                                        checked{% endif %}>
+                                    <label class="custom-control-label green" for="is_dora_1">
+                                        Yes
                                     </label>
                                 </div>
                                 <div class="custom-control custom-radio">
-                                    <input class="custom-control-input" type="radio" name="is_dora" id="is_dora_1" value="1"
-                                        {% if 1 == is_dora %} checked{% endif %}>
-                                    <label class="custom-control-label" for="is_dora_1">
-                                        Yes
+                                    <input class="custom-control-input" type="radio" name="is_dora" id="is_dora_0" value="0"
+                                        {% if 0 == is_dora %} checked{% endif %}>
+                                    <label class="custom-control-label green" for="is_dora_0">
+                                        No
                                     </label>
                                 </div>
                             </div>
@@ -250,13 +249,13 @@
                 </div>
             </form>
             <div class="modal-footer">
-                <button type="submit" class="btn btn-secondary btn-block" form="filter">判定</button>
+                <button type="submit" class="btn btn-secondary btn-block green" form="filter">判定</button>
             </div>
         </div>
     </div>
-        <div class="text-center py-3">
+        <div class="text-center py-2">
             <p>
-                参考文献<br>
+                <h5>参考文献</h5>
                 <a href="https://amzn.to/2IYJhtJ"> 「統計学」のマージャン戦術</a><br>
                 <a href="https://note.com/unimaru_shikura/n/nf759b8f1a0c7">副露テンパイ vs リーチ 押し引き表</a>
             </p>
