@@ -49,6 +49,7 @@
                                         value="{{ p.id|stringformat:"i" }}" {% if p.id == rule %} checked{% endif %}>
                                     <label class="custom-control-label green" for="rule{{ p.id|stringformat:"i" }}">
                                         {{ p.title }}
+                                        <div style="font-size: 14px;">（※ {{ p.detail }}）</div>
                                     </label>
                                 </div>
                             {% endfor %}
@@ -99,7 +100,8 @@
                                     <input class="custom-control-input" type="radio" name="point" id="point_{{ p.child_point|stringformat:"i" }}"
                                         value="{{ p.child_point|stringformat:"i" }}" {% if p.child_point == point %} checked{% endif %}>
                                     <label class="custom-control-label green" for="point_{{ p.child_point|stringformat:"i" }}">
-                                        {{ p.fu }}符{{ p.han }}翻（子 {{ p.child_point }}点 親 {{ p.parent_point }}点）
+                                        {{ p.fu }}符{{ p.han }}翻
+                                        <span style="font-size: 14px;">（子 {{ p.child_point }}点 親 {{ p.parent_point }}点）</span>
                                     </label>
                                 </div>
                                 {% endfor %}
@@ -116,7 +118,8 @@
                                     <input class="custom-control-input" type="radio" name="kyotaku" id="kyotaku_{{ p.num }}"
                                         value="{{ p.num }}" {% if p.num == kyotaku %} checked{% endif %}>
                                     <label class="custom-control-label green" for="kyotaku_{{ p.num }}">
-                                        {{ p.num }}本（{{ p.point }}点）
+                                        {{ p.num }}本
+                                        <span style="font-size: 14px;">（{{ p.point }}点）</span>
                                     </label>
                                 </div>
                                 {% endfor %}
@@ -155,7 +158,8 @@
                                     <input class="custom-control-input" type="radio" name="hoju_rate" id="hoju_rate_{{ p.value }}" value="{{ p.value }}"
                                         {% if p.value == hoju_rate %} checked{% endif %}>
                                     <label class="custom-control-label green" for="hoju_rate_{{ p.value }}">
-                                        {{ p.value }}%（例: {{ p.example }}）
+                                        {{ p.value }}%
+                                        <span style="font-size: 14px;">（例: {{ p.example }}）</span>
                                     </label>
                                 </div>
                                 {% endfor %}

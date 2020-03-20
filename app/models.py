@@ -430,9 +430,8 @@ class Oshihiki(models.Model):
 
     def get_rule_option(self):
         rule_option = []
-        rule_option.append({'id': 2, 'title': '天鳳ルール（段位戦 七段）'})
-        rule_option.append(
-            {'id': 1, 'title': 'Mリーグルール（25,000点持ち 30,000点返し ウマ1-3）'})
+        rule_option.append({'id': 2, 'title': '天鳳ルール', 'detail': '段位戦 七段'})
+        rule_option.append({'id': 1, 'title': 'Mリーグルール', 'detail': '25,000点持ち 30,000点返し ウマ1-3'})
 
         return rule_option
 
