@@ -504,11 +504,17 @@ class OshihikiFilterView(FilterView):
         kwargs['rule_option'] = oshihiki.get_rule_option()
         kwargs['ba_option'] = oshihiki.get_ba_option()
         kwargs['own_point_option'] = oshihiki.get_own_point_option()
+        kwargs['junme_option'] = oshihiki.get_junme_option()
         kwargs['point_option'] = oshihiki.get_point_option()
         kwargs['kyotaku_option'] = oshihiki.get_kyotaku_option()
         kwargs['honba_option'] = oshihiki.get_honba_option()
         kwargs['hoju_rate_option'] = oshihiki.get_hoju_rate_option()
+        kwargs['rule'] = 2
         kwargs['own_point'] = 25000
+        kwargs['is_ryokei'] = 1
+        kwargs['junme'] = 8
+        kwargs['you_are_parent'] = 0
+        kwargs['oponent_is_parent'] = 0
 
         try:
             rule = int(self.request.GET.get("rule"))

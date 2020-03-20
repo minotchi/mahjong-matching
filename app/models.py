@@ -465,6 +465,14 @@ class Oshihiki(models.Model):
 
         return point_option
 
+    def get_junme_option(self):
+        junme_option = []
+        junme_option.append({'value': 8})
+        junme_option.append({'value': 11})
+        junme_option.append({'value': 14})
+
+        return junme_option
+
     def get_hoju_rate_option(self):
         hoju_rate_option = []
         hoju_rate_option.append({'value': 5, 'example': 'スジ9本 外側28'})
@@ -477,7 +485,7 @@ class Oshihiki(models.Model):
 
     def get_kyotaku_option(self):
         kyotaku_option = []
-        for i in range(1, 10, 1):
+        for i in range(1, 6, 1):
             kyotaku = {'num': i, 'point': i * 1000}
             kyotaku_option.append(kyotaku)
 

@@ -39,137 +39,205 @@
 
             <form id="filter" method="get">
                 <div class="modal-body">
-
-                    <div id="div_id_rule" class="form-group"> <label for="id_rule" class="col-form-label ">
-                            ルール
-                        </label>
-                        <div class="">
-                            <select name="rule" class="form-control" id="rule">
-                                {% for p in rule_option %}
-                                <option value="{{ p.id|stringformat:"i" }}" {% if p.id == rule %} selected{% endif %}>{{ p.title }}</option>
-                                {% endfor %}
-                            </select>
+                    <fieldset class="form-group">
+                        <div class="row">
+                            <legend class="col-form-label col-sm-2 pt-0">ルール</legend>
+                            <div class="col-sm-10">
+                            {% for p in rule_option %}
+                                <div class="custom-control custom-radio custom-control-inline">
+                                    <input class="custom-control-input" type="radio" name="rule" id="rule{{ p.id|stringformat:"i" }}"
+                                        value="{{ p.id|stringformat:"i" }}" {% if p.id == rule %} checked{% endif %}>
+                                    <label class="custom-control-label" for="rule{{ p.id|stringformat:"i" }}">
+                                        {{ p.title }}
+                                    </label>
+                                </div>
+                            {% endfor %}
+                            </div>
                         </div>
-                    </div>
+                    </fieldset>
 
-                    <div id="div_id_ba" class="form-group"> <label for="id_ba" class="col-form-label ">
-                            場
-                        </label>
-                        <div class="">
-                            <select name="ba" class="form-control" id="ba">
+                    <fieldset class="form-group">
+                        <div class="row">
+                            <legend class="col-form-label col-sm-2 pt-0">場</legend>
+                            <div class="col-sm-10">
                                 {% for p in ba_option %}
-                                <option value="{{ p.id|stringformat:"i" }}" {% if p.id == ba %} selected{% endif %}>{{ p.title }}</option>
+                                <div class="custom-control custom-radio custom-control-inline">
+                                    <input class="custom-control-input" type="radio" name="ba" id="ba_{{ p.id }}"
+                                        value="{{ p.id }}" {% if p.id == ba %} checked{% endif %}>
+                                    <label class="custom-control-label" for="ba_{{ p.id }}">
+                                        {{ p.title }}
+                                    </label>
+                                </div>
                                 {% endfor %}
-                            </select>
+                            </div>
                         </div>
-                    </div>
+                    </fieldset>
 
-                    <div id="div_id_own_point" class="form-group"> <label for="id_own_point" class="col-form-label ">
-                            持ち点
-                        </label>
-                        <div class="">
-                            <select name="own_point" class="form-control" id="own_point">
-                                {% for p in own_point_option %}
-                                <option value="{{ p.point|stringformat:"i" }}" {% if p.point == own_point %} selected{% endif %}>{{ p.title }}</option>
-                                {% endfor %}
-                            </select>
+                    <fieldset class="form-group">
+                        <div class="row">
+                            <legend class="col-form-label col-sm-2 pt-0">持ち点</legend>
+                            <div class="col-sm-10">
+                                <div class="">
+                                    <select name="own_point" class="form-control" id="own_point">
+                                        {% for p in own_point_option %}
+                                        <option value="{{ p.point|stringformat:"i" }}" {% if p.point == own_point %} selected{% endif %}>{{ p.title }}
+                                        </option>
+                                        {% endfor %}
+                                    </select>
+                                </div>
+                            </div>
                         </div>
-                    </div>
+                    </fieldset>
 
-                    <div id="div_id_point" class="form-group"> <label for="id_point" class="col-form-label ">
-                            打点
-                        </label>
-                        <div class="">
-                            <select name="point" class="form-control" id="point">
-                                {% for p in point_option %}
-                                <option value="{{ p.child_point|stringformat:"i" }}" {% if p.child_point == point %} selected{% endif %}>{{ p.fu }}符 {{ p.han }}翻（子: {{ p.child_point }}点　親: {{ p.parent_point }}点）</option>
-                                {% endfor %}
-                            </select>
+                    <fieldset class="form-group">
+                        <div class="row">
+                            <legend class="col-form-label col-sm-2 pt-0">打点</legend>
+                            <div class="col-sm-10">
+                                <div class="">
+                                    <select name="point" class="form-control" id="point">
+                                        {% for p in point_option %}
+                                        <option value="{{ p.child_point|stringformat:"i" }}" {% if p.child_point == point %} selected{% endif %}>{{ p.fu }}符
+                                            {{ p.han }}翻（子: {{ p.child_point }}点　親: {{ p.parent_point }}点）</option>
+                                        {% endfor %}
+                                    </select>
+                                </div>
+                            </div>
                         </div>
-                    </div>
+                    </fieldset>
 
-                    <div id="div_id_kyotaku" class="form-group"> <label for="id_kyotaku" class="col-form-label ">
-                            供託
-                        </label>
-                        <div class="">
-                            <select name="kyotaku" class="form-control" id="kyotaku">
+                    <fieldset class="form-group">
+                        <div class="row">
+                            <legend class="col-form-label col-sm-2 pt-0">供託</legend>
+                            <div class="col-sm-10">
                                 {% for p in kyotaku_option %}
-                                <option value="{{ p.num }}" {% if p.num == kyotaku %} selected{% endif %}>{{ p.num }}本（{{ p.point }}点）</option>
+                                <div class="custom-control custom-radio">
+                                    <input class="custom-control-input" type="radio" name="kyotaku" id="kyotaku_{{ p.num }}"
+                                        value="{{ p.num }}" {% if p.num == kyotaku %} checked{% endif %}>
+                                    <label class="custom-control-label" for="kyotaku_{{ p.num }}">
+                                        {{ p.num }}本（{{ p.point }}点）
+                                    </label>
+                                </div>
                                 {% endfor %}
-                            </select>
+                            </div>
                         </div>
-                    </div>
+                    </fieldset>
 
-                    <div id="div_id_is_ryokei" class="form-group">
-                        <label for="is_ryokei" class="col-form-label ">
-                            待ち
-                        </label>
-                        <div class="">
-                            <select name="is_ryokei" class="form-control" id="is_ryokei">
-                                <option value="1" {% if 1 == is_ryokei %} selected{% endif %}>良形</option>
-                                <option value="0" {% if 0 == is_ryokei %} selected{% endif %}>愚形</option>
-                            </select>
+                    <fieldset class="form-group">
+                        <div class="row">
+                            <legend class="col-form-label col-sm-2 pt-0">待ち</legend>
+                            <div class="col-sm-10">
+                                <div class="custom-control custom-radio custom-control-inline">
+                                    <input class="custom-control-input" type="radio" name="is_ryokei" id="is_ryokei_1" value="1" {% if 1 == is_ryokei %}
+                                        checked{% endif %}>
+                                    <label class="custom-control-label" for="is_ryokei_1">
+                                        良形
+                                    </label>
+                                </div>
+                                <div class="custom-control custom-radio custom-control-inline">
+                                    <input class="custom-control-input" type="radio" name="is_ryokei" id="is_ryokei_0" value="0" {% if 0 == is_ryokei %}
+                                        checked{% endif %}>
+                                    <label class="custom-control-label" for="is_ryokei_0">
+                                        愚形
+                                    </label>
+                                </div>
+                            </div>
                         </div>
-                    </div>
+                    </fieldset>
 
-                    <div id="div_id_hoju_rate" class="form-group"> <label for="id_hoju_rate" class="col-form-label ">
-                            放銃率
-                        </label>
-                        <div class="">
-                            <select name="hoju_rate" class="form-control" id="id_hoju_rate">
+                    <fieldset class="form-group">
+                        <div class="row">
+                            <legend class="col-form-label col-sm-2 pt-0">放銃率</legend>
+                            <div class="col-sm-10">
                                 {% for p in hoju_rate_option %}
-                                <option value="{{ p.value|stringformat:"i" }}" {% if p.value == hoju_rate %} selected{% endif %}>{{ p.value }}%（例 : {{ p.example }}）</option>
+                                <div class="custom-control custom-radio">
+                                    <input class="custom-control-input" type="radio" name="hoju_rate" id="hoju_rate_{{ p.value }}" value="{{ p.value }}"
+                                        {% if p.value == hoju_rate %} checked{% endif %}>
+                                    <label class="custom-control-label" for="hoju_rate_{{ p.value }}">
+                                        {{ p.value }}%（例: {{ p.example }}）
+                                    </label>
+                                </div>
                                 {% endfor %}
-                            </select>
+                            </div>
                         </div>
-                    </div>
+                    </fieldset>
 
-                    <div id="div_id_junme" class="form-group"> <label for="id_junme" class="col-form-label ">
-                            順目
-                        </label>
-                        <div class="">
-                            <select name="junme" class="form-control" id="junme">
-                                <option value="8" {% if 8 == junme %} selected{% endif %}>8順目</option>
-                                <option value="11" {% if 11 == junme %} selected{% endif %}>11順目</option>
-                                <option value="14" {% if 14 == junme %} selected{% endif %}>14順目</option>
-                            </select>
+                    <fieldset class="form-group">
+                        <div class="row">
+                            <legend class="col-form-label col-sm-2 pt-0">順目</legend>
+                            <div class="col-sm-10">
+                                {% for p in junme_option %}
+                                <div class="custom-control custom-radio custom-control-inline">
+                                    <input class="custom-control-input" type="radio" name="junme" id="junme_{{ p.value }}" value="{{ p.value }}"
+                                        {% if p.value == junme %} checked{% endif %}>
+                                    <label class="custom-control-label" for="junme_{{ p.value }}">
+                                        {{ p.value }}順目
+                                    </label>
+                                </div>
+                                {% endfor %}
+                            </div>
                         </div>
-                    </div>
+                    </fieldset>
 
-                    <div id="div_id_you_are_parent" class="form-group"> <label for="id_you_are_parent" class="col-form-label ">
-                            自分
-                        </label>
-                        <div class="">
-                             <select name="you_are_parent" class="nullbooleanselect form-control" id="id_you_are_parent">
-                                <option value="0" {% if 0 == you_are_parent %} selected{% endif %}>子</option>
-                                <option value="1" {% if 1 == you_are_parent %} selected{% endif %}>親</option>
-                            </select>
+                    <fieldset class="form-group">
+                        <div class="row">
+                            <legend class="col-form-label col-sm-2 pt-0">自分</legend>
+                            <div class="col-sm-10">
+                                <div class="custom-control custom-radio custom-control-inline">
+                                    <input class="custom-control-input" type="radio" name="you_are_parent" id="you_are_parent_0" value="0"
+                                        {% if 0 == you_are_parent %} checked{% endif %}>
+                                    <label class="custom-control-label" for="you_are_parent_0">
+                                        子
+                                    </label>
+                                </div>
+                                <div class="custom-control custom-radio custom-control-inline">
+                                    <input class="custom-control-input" type="radio" name="you_are_parent" id="you_are_parent_1" value="1"
+                                        {% if 1 == you_are_parent %} checked{% endif %}>
+                                    <label class="custom-control-label" for="you_are_parent_1">
+                                        親
+                                    </label>
+                                </div>
+                            </div>
                         </div>
-                    </div>
+                    </fieldset>
 
-                    <div id="div_id_oponent_is_parent" class="form-group"> <label for="id_oponent_is_parent" class="col-form-label ">
-                            相手
-                        </label>
-                        <div class="">
-                            <select name="oponent_is_parent" class="nullbooleanselect form-control" id="id_oponent_is_parent">
-                                <option value="0" {% if 0 == oponent_is_parent %} selected{% endif %}>子</option>
-                                <option value="1" {% if 1 == oponent_is_parent %} selected{% endif %}>親</option>
-                            </select>
+                    <fieldset class="form-group">
+                        <div class="row">
+                            <legend class="col-form-label col-sm-2 pt-0">相手</legend>
+                            <div class="col-sm-10">
+                                <div class="custom-control custom-radio custom-control-inline">
+                                    <input class="custom-control-input" type="radio" name="oponent_is_parent" id="oponent_is_parent_0" value="0"
+                                        {% if 0 == oponent_is_parent %} checked{% endif %}>
+                                    <label class="custom-control-label" for="oponent_is_parent_0">
+                                        子
+                                    </label>
+                                </div>
+                                <div class="custom-control custom-radio custom-control-inline">
+                                    <input class="custom-control-input" type="radio" name="oponent_is_parent" id="oponent_is_parent_1" value="1"
+                                        {% if 1 == oponent_is_parent %} checked{% endif %}>
+                                    <label class="custom-control-label" for="oponent_is_parent_1">
+                                        親
+                                    </label>
+                                </div>
+                            </div>
                         </div>
-                    </div>
+                    </fieldset>
 
-                    <div id="div_id_is_dora" class="form-group"> <label for="id_is_dora" class="col-form-label ">
-                            一発 or ドラ
-                        </label>
-                        <div class="">
-                            <select name="is_dora" class="nullbooleanselect form-control" id="id_oponent_is_parent">
-                                <option value="0" {% if 0 == is_dora %} selected{% endif %}>No</option>
-                                <option value="1" {% if 1 == is_dora %} selected{% endif %}>Yes</option>
-                            </select>
+                    <fieldset class="form-group">
+                        <div class="row">
+                            <legend class="col-form-label col-sm-2 pt-0">一発 or ドラ or 赤牌</legend>
+                            <div class="col-sm-10">
+                                <div class="custom-control custom-radio custom-control-inline">
+                                    <input type="hidden" name="is_dora" value="0">
+                                    <input class="form-check-input" type="checkbox" name="is_dora" value="1" id="is_dora" {% if 1 == is_dora %}
+                                        checked{% endif %}>
+                                    <label class="form-check-label" for="is_dora">
+                                        Yes
+                                    </label>
+                                </div>
+                            </div>
                         </div>
-                    </div>
+                    </fieldset>
 
-                    <!-- {{ filter.form|crispy }} -->
                 </div>
             </form>
             <div class="modal-footer">
