@@ -3,6 +3,7 @@ from django.http import HttpResponseRedirect
 from django.urls import reverse_lazy, reverse
 from django.utils import timezone
 from django.views.generic import DetailView
+from django.views.generic import TemplateView
 from django.views.generic.edit import CreateView, UpdateView, DeleteView
 from django_filters.views import FilterView
 from django.shortcuts import redirect
@@ -18,6 +19,8 @@ from django.db.models import Prefetch
 # LoginRequiredMixin：未ログインのユーザーをログイン画面に誘導するMixin
 # 参考：https://docs.djangoproject.com/ja/2.1/topics/auth/default/#the-loginrequired-mixin
 
+class LoginView(TemplateView):
+    template_name = "app/login.html"
 
 class ItemFilterView(LoginRequiredMixin, FilterView):
     """

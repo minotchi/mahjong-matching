@@ -15,7 +15,7 @@
                         <li class="list-group-item mb-1">
                             <div class="row">
                                 <div class="col-5 col-sm-2">
-                                    <p>{{ comment.user.last_name }}</p>
+                                    <p>{{ comment.user.get_view_name }}</p>
                                 </div>
                                 <div class="col-5 col-sm-7">
                                     <p>{{ comment.content | linebreaksbr }}</p>

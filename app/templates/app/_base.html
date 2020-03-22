@@ -15,7 +15,7 @@
     <link rel="stylesheet"
           href="https://cdnjs.cloudflare.com/ajax/libs/bootstrap-datepicker/1.8.0/css/bootstrap-datepicker.min.css">
     <link href="{% static "app/css/app.css" %}" rel="stylesheet">
-
+    <script src="https://kit.fontawesome.com/d8fcbf2972.js" crossorigin="anonymous"></script>
     {% if GOOGLE_ANALYTICS_TRACKING_ID %}
         {% include "./ga.html" %}
     {% endif %}
@@ -51,14 +51,14 @@
         <ul class="navbar-nav my-lg-0">
             {% if user.is_authenticated %}
             <li class="nav-item">
-                <a class="nav-link">{{ user.last_name }}さん</a>
+                <a class="nav-link">{{ user.get_view_name }}さん</a>
             </li>
             <li class="nav-item">
                 <a class="nav-link" href="{% url 'logout' %}">ログアウト</a>
             </li>
             {% else %}
             <li class="nav-item">
-                <a class="nav-link" href="{% url 'social:begin' 'google-oauth2' %}">Googleログイン</a>
+                <a class="nav-link" href="{% url 'login' %}">ログイン</a>
             </li>
             {% endif %}
         </ul>
@@ -73,13 +73,9 @@
 {% endblock %}
 
 <!-- Footer -->
-<footer class="page-footer font-small blue">
-
-    <div class="footer-copyright text-center py-2">
-        <h5>開発者</h5>
-        <a href="https://twitter.com/minotchi"> みのっち</a>
-    </div>
-
+<footer>
+    <h5>開発者</h5>
+    <a href="https://twitter.com/minotchi">みのっち</a>
 </footer>
 <!-- Footer -->
 

@@ -33,6 +33,12 @@ class User(AbstractUser):
         else:
             return self.username
 
+    def get_view_name(self):
+        if self.last_name:
+            return self.last_name
+        else:
+            return self.first_name
+
     # 選択リストでの表示
     def __str__(self):
         return self.get_full_name()

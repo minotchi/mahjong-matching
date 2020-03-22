@@ -3,13 +3,14 @@ from django.urls import path, include
 from django.contrib.auth import views as auth_views
 
 from .models import Item
-from .views import ItemFilterView, ItemDetailView, ItemCreateView, ItemUpdateView, ItemDeleteView
+from .views import LoginView, ItemFilterView, ItemDetailView, ItemCreateView, ItemUpdateView, ItemDeleteView
 from .views import RoomFilterView, RoomDetailView, RoomCreateView, RoomUpdateView, RoomDeleteView, RoomJoinRequestCreateView, RoomJoinRequestFilterView, RoomUserCreateView, CommentFilterView, CommentCreateView, OshihikiFilterView
 
 # アプリケーションのルーティング設定
 
 urlpatterns = [
     path('auth/', include('social_django.urls', namespace='social')),
+    path('login/', LoginView.as_view(), name='login'),
     path('logout/', auth_views.LogoutView.as_view(), name='logout'),
 
     path('detail/<int:pk>/', ItemDetailView.as_view(), name='detail'),
