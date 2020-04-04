@@ -240,8 +240,7 @@ class RoomDetailView(DetailView):
         return super().get_context_data(**kwargs)
 
 
-class RoomCreateView(CreateView):
-    # TODO ログインしているか確認する処理
+class RoomCreateView(LoginRequiredMixin, CreateView):
     """
     ビュー：登録画面
     """
